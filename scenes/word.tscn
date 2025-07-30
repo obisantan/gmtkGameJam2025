@@ -6,7 +6,7 @@
 resource_local_to_scene = true
 load_path = "res://.godot/imported/word_tile.png-45d16669185f60e3250f77335f9cfd5c.ctex"
 
-[node name="Word" type="Node2D"]
+[node name="Word" type="Node2D" groups=["words"]]
 z_index = 10
 z_as_relative = false
 script = ExtResource("1_atc6g")

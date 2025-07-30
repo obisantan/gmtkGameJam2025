@@ -3,7 +3,7 @@ extends Node2D
 
 
 @onready var word_pool = $WordPool
-@onready var loop_area = $LoopArea
+@onready var loop_area : LoopArea = $LoopArea
 @onready var message_label = $MessageLabel
 
 var word_list = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
@@ -22,14 +22,14 @@ func spawn_word_nodes():
 
 func _process(delta):
 	for word_node in word_pool.get_children():
-		if word_node.has_method("dragging") and word_node.dragging:
+		if word_node.is_in_group("words") and word_node.just_dropped:
+			#print("%s dragging? %s, mouse pressed? %s" % [word_node.word, word_node.dragging, Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)])
+
 			# Check if word is released over loop_area
 			if !Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-				var loop_area_rect = Rect2(loop_area.global_position, Vector2(600, 200))  # Adjust size as needed
-				if loop_area_rect.has_point(word_node.global_position):
+				if loop_area.is_inside(word_node.global_position):
 					if can_add_word(word_node.word):
 						add_word_to_loop(word_node)
-						message_label.text = ""
 					else:
 						message_label.text = "❌ Invalid connection for '%s'" % word_node.word
 					word_node.dragging = false
@@ -47,9 +47,13 @@ func add_word_to_loop(word_node: Node2D):
 	current_loop.append(word_node)
 	word_node.get_parent().remove_child(word_node)
 	loop_area.add_child(word_node)
-	word_node.position = Vector2(100 + current_loop.size() * 150, 100)
-	check_loop_complete()
+	word_node.position = Vector2(-390 + current_loop.size() * 150, 0)
+	check_loop_complete(word_node)
 
-func check_loop_complete():
-	if current_loop.size() >= 3 and current_loop[0].word[0] == current_loop[-1].word[-1]:
+func check_loop_complete(word_node: Node2D):
+	if (current_loop.size() == 1):
+		message_label.text = "✅ Loop started with %s!" % word_node.word
+	elif current_loop.size() >= 3 and current_loop[0].word[0] == current_loop[-1].word[-1]:
 		message_label.text = "✅ Loop Complete!"
+	else:
+		message_label.text = "✅ '%s' added to Loop!" % word_node.word

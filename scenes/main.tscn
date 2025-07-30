@@ -1,14 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://be6uj45ihvs4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hxnpu"]
+[ext_resource type="PackedScene" uid="uid://dmm1dv8luwsh0" path="res://scenes/loop_area.tscn" id="2_n0hmi"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nshij"]
 resource_local_to_scene = true
 load_path = "res://.godot/imported/wordpool.png-97c8597287736eaabeb8228f94008747.ctex"
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5ksk6"]
-resource_local_to_scene = true
-load_path = "res://.godot/imported/looparea.png-8db85d4380b26c8ed705cb1a63b1ee8d.ctex"
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_hxnpu")
@@ -22,10 +19,13 @@ texture = SubResource("CompressedTexture2D_nshij")
 region_enabled = true
 region_rect = Rect2(-1, 0, 706, 298.5)
 
-[node name="LoopArea" type="Node2D" parent="."]
-position = Vector2(486, 110)
+[node name="LoopArea" parent="." instance=ExtResource("2_n0hmi")]
 
-[node name="Looparea" type="Sprite2D" parent="LoopArea"]
-texture = SubResource("CompressedTexture2D_5ksk6")
-region_enabled = true
-region_rect = Rect2(0, 172.5, 649, 88)
+[node name="MessageLabel" type="Label" parent="."]
+offset_left = 48.0
+offset_top = 171.0
+offset_right = 147.0
+offset_bottom = 194.0
+size_flags_horizontal = 4
+horizontal_alignment = 1
+vertical_alignment = 1

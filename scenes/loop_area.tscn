@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmm1dv8luwsh0"]
+
+[ext_resource type="Script" path="res://scenes/loop_area.gd" id="1_glom0"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5ksk6"]
+resource_local_to_scene = true
+load_path = "res://.godot/imported/looparea.png-8db85d4380b26c8ed705cb1a63b1ee8d.ctex"
+
+[node name="LoopArea" type="Node2D"]
+position = Vector2(486, 110)
+script = ExtResource("1_glom0")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = SubResource("CompressedTexture2D_5ksk6")
+region_enabled = true
+region_rect = Rect2(0, 172.5, 649, 88)

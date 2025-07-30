@@ -6,8 +6,9 @@ extends Node2D
 @onready var label = %Label
 @onready var sprite = %Sprite
 
-var dragging := false
 var drag_offset := Vector2.ZERO
+var dragging := false
+var just_dropped := false
 
 static var currently_dragging_node: Word = null
 
@@ -26,12 +27,14 @@ func _unhandled_input(event):
 				if currently_dragging_node == null and _is_mouse_over():
 					currently_dragging_node = self
 					dragging = true
+					just_dropped = false
 					drag_offset = global_position - event.position
 					z_index = 1000
 					get_viewport().set_input_as_handled()
 			else:
 				if currently_dragging_node == self:
 					dragging = false
+					just_dropped = true
 					z_index = 5
 					currently_dragging_node = null
 
