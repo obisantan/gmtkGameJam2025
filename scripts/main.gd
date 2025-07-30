@@ -4,7 +4,7 @@ extends Node2D
 
 @onready var word_pool = $WordPool
 @onready var loop_area : LoopArea = $LoopArea
-@onready var message_label = $MessageLabel
+@onready var message_label = %MessageLabel
 
 var word_list = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
 var current_loop: Array[Node2D] = []
@@ -13,11 +13,16 @@ func _ready():
 	spawn_word_nodes()
 
 func spawn_word_nodes():
+	var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing
+	var cols = 5
+	var start_pos = Vector2(-270, 0)
+	
 	var word_scene = preload("res://scenes/word.tscn")
 	for i in range(word_list.size()):
 		var word_node = word_scene.instantiate()
 		word_node.word = word_list[i]
-		word_node.position = Vector2(i * 10, 0)
+		word_node.global_position = start_pos + Vector2(i % cols, i / cols) * grid_size
+		word_node.spawn_point = word_node.global_position + word_pool.global_position
 		word_pool.add_child(word_node)
 
 func _process(delta):
@@ -32,6 +37,8 @@ func _process(delta):
 						add_word_to_loop(word_node)
 					else:
 						message_label.text = "❌ Invalid connection for '%s'" % word_node.word
+						word_node.global_position = word_node.spawn_point
+
 					word_node.dragging = false
 				else:
 					# Not dropped in loop area, reset drag

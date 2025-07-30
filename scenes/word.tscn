@@ -13,7 +13,7 @@ script = ExtResource("1_atc6g")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-scale = Vector2(0.4, 0.4)
+scale = Vector2(0.3, 0.3)
 texture = SubResource("CompressedTexture2D_r15ua")
 region_enabled = true
 region_rect = Rect2(40, 149, 397, 178)

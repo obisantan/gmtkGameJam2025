@@ -7,11 +7,13 @@ extends Node2D
 @onready var sprite = %Sprite
 
 var drag_offset := Vector2.ZERO
+var spawn_point := Vector2.ZERO
 var dragging := false
 var just_dropped := false
 
 static var currently_dragging_node: Word = null
-
+# allows for dropped word tile to be put down exactly 1 above everything else
+static var z_max := 10
 
 func _ready():
 	label.text = word
@@ -31,12 +33,16 @@ func _unhandled_input(event):
 					drag_offset = global_position - event.position
 					z_index = 1000
 					get_viewport().set_input_as_handled()
+					#print("%s: %s, z-max: %s" % [self.word, z_index, z_max])
 			else:
 				if currently_dragging_node == self:
 					dragging = false
 					just_dropped = true
-					z_index = 5
+					z_index = z_max + 1
+					z_max = z_index
 					currently_dragging_node = null
+					#print("%s: %s, z-max: %s" % [self.word, z_index, z_max])
+
 
 	elif event is InputEventMouseMotion:
 		if dragging and currently_dragging_node == self:
