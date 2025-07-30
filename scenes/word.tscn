@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://gamui70xr8lc"]
+
+[ext_resource type="Script" path="res://scripts/word.gd" id="1_atc6g"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_r15ua"]
+resource_local_to_scene = true
+load_path = "res://.godot/imported/word_tile.png-45d16669185f60e3250f77335f9cfd5c.ctex"
+
+[node name="Word" type="Node2D"]
+z_index = 10
+z_as_relative = false
+script = ExtResource("1_atc6g")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+scale = Vector2(0.4, 0.4)
+texture = SubResource("CompressedTexture2D_r15ua")
+region_enabled = true
+region_rect = Rect2(40, 149, 397, 178)
+
+[node name="Label" type="Label" parent="Sprite"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -198.5
+offset_top = -89.0
+offset_right = -198.5
+offset_bottom = -89.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 75
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
