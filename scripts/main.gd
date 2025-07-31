@@ -1,19 +1,28 @@
 class_name Main
 extends Node2D
 
+@onready var reset_button := %ResetButton
+@onready var restart_button := %RestartButton
 
 @onready var word_pool = $WordPool
 @onready var loop_area : LoopArea = $LoopArea
 @onready var message_label = %MessageLabel
-@onready var reset_button := %ResetButton
 
-var word_list = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
+var word_list_debug = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
+var word_list = []
 var current_loop: Array[Node2D] = []
 
 func _ready():
+	word_list = DictionaryManager.get_level_words()
+	register_events()
 	spawn_word_nodes()
+
+func register_events():
+	# currently there is not a reason for eventManager yet...
 	reset_button.button_up.connect(on_reset_button)
-	EventManager.button_pressed_reset.connect(on_reset_button)
+	#EventManager.button_pressed_reset.connect(on_reset_button)
+	restart_button.button_up.connect(on_restart_button)
+	#EventManager.button_pressed_restart.connect(on_restart_button)	
 
 func on_reset_button():
 	# reset current loop, but all words back
@@ -22,6 +31,10 @@ func on_reset_button():
 	current_loop = []
 	message_label.text = "ℹ️ Loop Reset!"
 	print(current_loop)
+
+func on_restart_button():
+	get_tree().reload_current_scene()
+
 
 func spawn_word_nodes():
 	var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing

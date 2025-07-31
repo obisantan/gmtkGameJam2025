@@ -2,6 +2,7 @@
 extends Node
 
 signal button_pressed_reset
+signal button_pressed_restart
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

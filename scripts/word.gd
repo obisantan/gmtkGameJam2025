@@ -33,7 +33,7 @@ func _unhandled_input(event):
 					drag_offset = global_position - event.position
 					z_index = 1000
 					get_viewport().set_input_as_handled()
-					print("%s: %s, z-max: %s" % [self.word, z_index, z_max])
+					#print("%s: %s, z-max: %s" % [self.word, z_index, z_max])
 			else:
 				if currently_dragging_node == self:
 					dragging = false
@@ -41,7 +41,7 @@ func _unhandled_input(event):
 					z_index = z_max + 1
 					z_max = z_index
 					currently_dragging_node = null
-					print("%s: %s, z-max: %s" % [self.word, z_index, z_max])
+					#print("%s: %s, z-max: %s" % [self.word, z_index, z_max])
 
 
 	elif event is InputEventMouseMotion:

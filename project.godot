@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 [autoload]
 
 EventManager="*res://scripts/event_manager.gd"
+DictionaryManager="*res://scripts/dictionary_manager.gd"
 
 [display]
 
