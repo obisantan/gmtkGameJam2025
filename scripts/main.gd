@@ -8,12 +8,12 @@ extends Node2D
 @onready var loop_area : LoopArea = $LoopArea
 @onready var message_label = %MessageLabel
 
-var word_list_debug = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
 var word_list = []
 var loop: Array[Word] = []
 
 func _ready():
-	word_list = word_list_debug
+	### TEST TODO
+	word_list = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
 	#word_list = DictionaryManager.get_level_words()
 	register_events()
 	spawn_word_nodes()
@@ -47,7 +47,7 @@ func spawn_word_nodes():
 		word_node.word = word_list[i]
 		word_node.global_position = start_pos + Vector2(i % cols, i / cols) * grid_size
 		word_pool.add_child(word_node)
-		word_node.spawn_point = word_node.position  # local position, relative to word_pool
+		word_node.spawn_point = word_node.global_position
 
 func _process(delta):
 	# loops over all words assigned to word_pool
@@ -67,8 +67,6 @@ func _process(delta):
 						move_back_to_spawn(word_node)
 
 					word_node.dragging = false
-					#for i in loop:
-						#print(i.word)
 				else:
 					# Not dropped in loop area, reset drag
 					word_node.dragging = false
@@ -85,13 +83,15 @@ func _process(delta):
 						remove_word_from_loop(word_node)
 					else:
 						message_label.text = "❌ Cannot remove '%s' from Loop!" % word_node.word
-						word_node.move_to_pos(word_node.get_parent().to_global(word_node.loop_point))
+						word_node.scale_to(word_node.loop_scale)
+						word_node.move_to_pos(word_node.loop_point)
 
 					word_node.dragging = false
 				else:
 					# Not dropped in pool area, reset drag
 					word_node.dragging = false
-					word_node.move_to_pos(word_node.get_parent().to_global(word_node.loop_point))
+					word_node.scale_to(word_node.loop_scale)
+					word_node.move_to_pos(word_node.loop_point)
 
 func can_add_word(word: String) -> bool:
 	if loop.size() == 0:
@@ -106,15 +106,15 @@ func add_word_to_loop(word_node: Word):
 	word_node.get_parent().remove_child(word_node)
 	loop_area.add_child(word_node)
 	word_node.current_location = Utils.Location.LOOP
-
-	# Tell the word to smoothly move from its old position to new layout
-	word_node.global_position = drop_pos  # restore so it appears in the same spot
+	word_node.global_position = drop_pos
+	word_node.scale_to(word_node.loop_scale)
 	arrange_loop_words()
 	check_loop_complete(word_node, true)
 	Utils.print_current_loop(loop)
 
 func arrange_loop_words():
-	var radius = 85.0
+	var radius_x = 130.0  # horizontal radius (wider)
+	var radius_y = 85.0   # vertical radius (narrower)
 	var center = loop_area.global_position
 	var count = loop.size()
 	if count == 0:
@@ -122,12 +122,13 @@ func arrange_loop_words():
 
 	var start_angle = PI
 	for i in range(count):
-		var angle = start_angle + i * TAU / count
-		var offset = Vector2(cos(angle), sin(angle)) * radius
+		var angle = start_angle + i * TAU / float(count)
+		var offset = Vector2(cos(angle) * radius_x, sin(angle) * radius_y)
 		var global_pos = center + offset
+
 		var current_word = loop[i]
+		current_word.loop_point = global_pos
 		current_word.move_to_pos(global_pos)
-		current_word.loop_point = current_word.position # just like spawn_point, local coords instead of global
 
 func check_loop_complete(word_node: Word, was_added: bool):
 	if was_added:
@@ -144,7 +145,10 @@ func check_loop_complete(word_node: Word, was_added: bool):
 		elif loop.size() == 0:
 			message_label.text = "ℹ️ Loop Reset!"
 		else:
-			message_label.text = "✅ Removed %s, changed Loop start to %s!" % [word_node.word, loop[0].word]
+			if word_node == loop[0]:
+				message_label.text = "✅ Removed %s, changed Loop start to %s!" % [word_node.word, loop[0].word]
+			else:
+				message_label.text = "✅ Removed %s!" % [word_node.word]
 
 func can_remove_word(word_node: Word):
 	if loop.size() == 0:
@@ -157,11 +161,7 @@ func can_remove_word(word_node: Word):
 		return false
 
 func remove_word_from_loop(word_node: Word):
-	# lets see if it is possible to do the same for both cases
-	if word_node == loop[0]:
-		loop.erase(word_node)
-
-	elif word_node == loop[-1]:
+	if word_node == loop[0] or word_node == loop[-1]:
 		loop.erase(word_node)
 	
 	# move it back to spawn
@@ -173,10 +173,10 @@ func remove_word_from_loop(word_node: Word):
 	Utils.print_current_loop(loop)
 
 func move_back_to_spawn(word_node: Word) -> void:
-	#word_node.just_dropped = false
 	var drop_pos = word_node.global_position  # keep visual position before reparent
 	word_node.get_parent().remove_child(word_node)
 	word_pool.add_child(word_node)
 	word_node.current_location = Utils.Location.POOL
 	word_node.global_position = drop_pos  # keep position visually consistent
-	word_node.move_to_pos(word_node.get_parent().to_global(word_node.spawn_point))  # tween to global position of spawn_point
+	word_node.scale_to(word_node.normal_scale)
+	word_node.move_to_pos(word_node.spawn_point)  # tween to global position of spawn_point
