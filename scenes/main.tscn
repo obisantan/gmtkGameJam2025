@@ -30,3 +30,18 @@ offset_right = 574.0
 offset_bottom = 266.0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ResetButton" type="Button" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 857.0
+offset_top = 245.0
+offset_right = 911.0
+offset_bottom = 276.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "RESET"
