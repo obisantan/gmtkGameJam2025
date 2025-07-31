@@ -1,10 +1,10 @@
 class_name Word
 extends Node2D
 
-@export var word: String = ""
-
 @onready var label = %Label
 @onready var sprite = %Sprite
+var word: String = ""
+
 
 static var currently_dragging_node: Word = null
 static var z_max := 10
@@ -13,7 +13,7 @@ var drag_offset := Vector2.ZERO
 var spawn_point := Vector2.ZERO
 var dragging := false
 var just_dropped := false
-
+var current_location := Utils.Location.POOL
 
 func _ready():
 	label.text = word

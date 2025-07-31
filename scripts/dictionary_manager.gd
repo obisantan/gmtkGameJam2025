@@ -67,8 +67,11 @@ func create_valid_loop() -> Array:
 func get_level_words() -> Array:
 	var loop = create_valid_loop()
 	if loop.is_empty():
-		push_warning("Could not generate a valid word loop for level.")
-		return []
+		loop = create_valid_loop()
+
+		if loop.is_empty():
+			push_warning("Could not generate a valid word loop for level.")
+			return []
 
 	var result = loop.duplicate()
 	while result.size() < total_words:

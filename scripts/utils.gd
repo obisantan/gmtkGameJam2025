@@ -1,8 +1,15 @@
-### GLOBAL PRELOAD - EventManager
+### GLOBAL PRELOAD - Utils
 extends Node
 
-signal button_pressed_reset
-signal button_pressed_restart
+signal event_button_pressed_reset
+signal event_button_pressed_restart
+
+enum Location {
+	POOL,
+	LOOP
+}
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

@@ -18,11 +18,11 @@ func _ready():
 	spawn_word_nodes()
 
 func register_events():
-	# currently there is not a reason for eventManager yet...
+	# currently there is not a reason for global events yet...
 	reset_button.button_up.connect(on_reset_button)
-	#EventManager.button_pressed_reset.connect(on_reset_button)
+	#Utils.event_button_pressed_reset.connect(on_reset_button)
 	restart_button.button_up.connect(on_restart_button)
-	#EventManager.button_pressed_restart.connect(on_restart_button)	
+	#Utils.event_button_pressed_restart.connect(on_restart_button)	
 
 func on_reset_button():
 	# reset current loop, but all words back
@@ -85,6 +85,7 @@ func add_word_to_loop(word_node: Word):
 
 	word_node.get_parent().remove_child(word_node)
 	loop_area.add_child(word_node)
+	word_node.current_location = Utils.Location.LOOP
 
 	# Tell the word to smoothly move from its old position to new layout
 	word_node.global_position = drop_pos  # restore so it appears in the same spot
@@ -120,5 +121,6 @@ func move_back_to_spawn(word_node: Word) -> void:
 	var drop_pos = word_node.global_position  # keep visual position before reparent
 	word_node.get_parent().remove_child(word_node)
 	word_pool.add_child(word_node)
+	word_node.current_location = Utils.Location.POOL
 	word_node.global_position = drop_pos  # keep position visually consistent
-	word_node.move_to_pos(word_node.get_parent().to_global(word_node.spawn_point))  # tween to global position of spawn_pointn
+	word_node.move_to_pos(word_node.get_parent().to_global(word_node.spawn_point))  # tween to global position of spawn_point
