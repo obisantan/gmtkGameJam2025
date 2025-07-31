@@ -48,6 +48,9 @@ func _unhandled_input(event):
 		if dragging and currently_dragging_node == self:
 			global_position = event.position + drag_offset
 
+func move_to_pos(global_pos: Vector2) -> void:
+	var tween := get_tree().create_tween()
+	tween.tween_property(self, "position", get_parent().to_local(global_pos), 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 func _is_mouse_over() -> bool:
 	var region_size = sprite.region_rect.size * sprite.scale

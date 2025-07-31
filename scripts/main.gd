@@ -18,10 +18,7 @@ func _ready():
 func on_reset_button():
 	# reset current loop, but all words back
 	for word_node in current_loop:
-		word_node.just_dropped = false
-		word_node.get_parent().remove_child(word_node)
-		word_pool.add_child(word_node)
-		word_node.global_position = word_node.spawn_point
+		move_back_to_spawn(word_node)
 	current_loop = []
 	message_label.text = "ℹ️ Loop Reset!"
 	print(current_loop)
@@ -36,8 +33,8 @@ func spawn_word_nodes():
 		var word_node = word_scene.instantiate()
 		word_node.word = word_list[i]
 		word_node.global_position = start_pos + Vector2(i % cols, i / cols) * grid_size
-		word_node.spawn_point = word_node.global_position + word_pool.global_position
 		word_pool.add_child(word_node)
+		word_node.spawn_point = word_node.position  # local position, relative to word_pool
 
 func _process(delta):
 	for word_node in word_pool.get_children():
@@ -51,15 +48,15 @@ func _process(delta):
 						add_word_to_loop(word_node)
 					else:
 						message_label.text = "❌ Invalid connection for '%s'!" % word_node.word
-						word_node.global_position = word_node.spawn_point
+						move_back_to_spawn(word_node)
 
 					word_node.dragging = false
-					for i in current_loop:
-						print(i.word)
+					#for i in current_loop:
+						#print(i.word)
 				else:
 					# Not dropped in loop area, reset drag
 					word_node.dragging = false
-					word_node.global_position = word_node.spawn_point
+					move_back_to_spawn(word_node)
 
 func can_add_word(word: String) -> bool:
 	if current_loop.size() == 0:
@@ -67,12 +64,34 @@ func can_add_word(word: String) -> bool:
 	var last_word = current_loop[-1].word
 	return last_word[-1] == word[0]
 
-func add_word_to_loop(word_node: Node2D):
+func add_word_to_loop(word_node: Word):
 	current_loop.append(word_node)
+
+	# Store the current global position before reparenting
+	var drop_pos = word_node.global_position
+
 	word_node.get_parent().remove_child(word_node)
 	loop_area.add_child(word_node)
-	word_node.position = Vector2(-390 + current_loop.size() * 150, 0)
+
+	# Tell the word to smoothly move from its old position to new layout
+	word_node.global_position = drop_pos  # restore so it appears in the same spot
+	arrange_loop_words()
 	check_loop_complete(word_node)
+
+func arrange_loop_words():
+	var radius = 85.0
+	var center = loop_area.global_position
+	var count = current_loop.size()
+	if count == 0:
+		return
+
+	var start_angle = PI
+	for i in range(count):
+		var angle = start_angle + i * TAU / count
+		var offset = Vector2(cos(angle), sin(angle)) * radius
+		var global_pos = center + offset
+
+		current_loop[i].move_to_pos(global_pos)
 
 func check_loop_complete(word_node: Node2D):
 	if (current_loop.size() == 1):
@@ -81,3 +100,12 @@ func check_loop_complete(word_node: Node2D):
 		message_label.text = "✅ Loop Complete!"
 	else:
 		message_label.text = "✅ '%s' added to Loop!" % word_node.word
+
+
+func move_back_to_spawn(word_node: Word) -> void:
+	word_node.just_dropped = false
+	var drop_pos = word_node.global_position  # keep visual position before reparent
+	word_node.get_parent().remove_child(word_node)
+	word_pool.add_child(word_node)
+	word_node.global_position = drop_pos  # keep position visually consistent
+	word_node.move_to_pos(word_node.get_parent().to_global(word_node.spawn_point))  # tween to global position of spawn_pointn
