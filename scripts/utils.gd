@@ -19,3 +19,9 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+
+func print_current_loop(loop: Array[Word]):
+	print("=== CURRENT LOOP ===")
+	for i in loop.size():
+		print("%s: %s" % [i, loop[i].word])

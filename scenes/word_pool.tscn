@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://b682354tsfxxv"]
+
+[ext_resource type="Script" path="res://scripts/word_pool.gd" id="1_auh36"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nshij"]
+resource_local_to_scene = true
+load_path = "res://.godot/imported/wordpool.png-97c8597287736eaabeb8228f94008747.ctex"
+
+[node name="WordPool" type="Node2D"]
+z_as_relative = false
+position = Vector2(366, 407)
+script = ExtResource("1_auh36")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = SubResource("CompressedTexture2D_nshij")
+region_enabled = true
+region_rect = Rect2(-1, 0, 706, 232.5)

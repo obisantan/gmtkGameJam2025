@@ -11,8 +11,10 @@ static var z_max := 10
 
 var drag_offset := Vector2.ZERO
 var spawn_point := Vector2.ZERO
+var loop_point := Vector2.ZERO
 var dragging := false
 var just_dropped := false
+var tweening := false
 var current_location := Utils.Location.POOL
 
 func _ready():
@@ -49,8 +51,13 @@ func _unhandled_input(event):
 			global_position = event.position + drag_offset
 
 func move_to_pos(global_pos: Vector2) -> void:
+	tweening = true
 	var tween := get_tree().create_tween()
 	tween.tween_property(self, "position", get_parent().to_local(global_pos), 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.finished.connect(func():
+		tweening = false
+		just_dropped = false
+	)
 
 func _is_mouse_over() -> bool:
 	var region_size = sprite.region_rect.size * sprite.scale
