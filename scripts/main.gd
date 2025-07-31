@@ -1,15 +1,23 @@
+###################################################################################################
+## MAIN (the game, essentially)																	 ##
+###################################################################################################
+
 class_name Main
 extends Node2D
+
+@onready var word_pool : WordPool = %WordPool
+@onready var loop_area : LoopArea = %LoopArea
+@onready var message_label = %MessageLabel
+@onready var line_container = %LineContainer
 
 @onready var reset_button := %ResetButton
 @onready var restart_button := %RestartButton
 
-@onready var word_pool = $WordPool
-@onready var loop_area : LoopArea = $LoopArea
-@onready var message_label = %MessageLabel
-
 var word_list = []
 var loop: Array[Word] = []
+var line_nodes: Array[Line2D] = []
+var loop_complete := false
+var pulse_time := 0.0
 
 func _ready():
 	### TEST TODO
@@ -17,6 +25,7 @@ func _ready():
 	#word_list = DictionaryManager.get_level_words()
 	register_events()
 	spawn_word_nodes()
+	clear_lines()
 
 func register_events():
 	# currently there is not a reason for global events yet...
@@ -26,7 +35,7 @@ func register_events():
 	#Utils.event_button_pressed_restart.connect(on_restart_button)	
 
 func on_reset_button():
-	# reset current loop, but all words back
+	clear_lines()
 	for word_node in loop:
 		move_back_to_spawn(word_node)
 	loop = []
@@ -36,10 +45,15 @@ func on_reset_button():
 func on_restart_button():
 	get_tree().reload_current_scene()
 
+
+###################################################################################################
+## LOOP LOGIC																					 ##
+###################################################################################################
+
 func spawn_word_nodes():
 	var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing
 	var cols = 5
-	var start_pos = Vector2(-270, 0)
+	var start_pos = Vector2(-270, -70)
 	
 	var word_scene = preload("res://scenes/word.tscn")
 	for i in range(word_list.size()):
@@ -93,6 +107,9 @@ func _process(delta):
 					word_node.scale_to(word_node.loop_scale)
 					word_node.move_to_pos(word_node.loop_point)
 
+	# and at the end, keep lines up to date with word locations
+	update_lines(delta)
+
 func can_add_word(word: String) -> bool:
 	if loop.size() == 0:
 		return true
@@ -111,6 +128,7 @@ func add_word_to_loop(word_node: Word):
 	arrange_loop_words()
 	check_loop_complete(word_node, true)
 	Utils.print_current_loop(loop)
+	redraw_lines()
 
 func arrange_loop_words():
 	var radius_x = 130.0  # horizontal radius (wider)
@@ -129,6 +147,7 @@ func arrange_loop_words():
 		var current_word = loop[i]
 		current_word.loop_point = global_pos
 		current_word.move_to_pos(global_pos)
+	redraw_lines()
 
 func check_loop_complete(word_node: Word, was_added: bool):
 	if was_added:
@@ -171,7 +190,8 @@ func remove_word_from_loop(word_node: Word):
 	arrange_loop_words()
 	check_loop_complete(word_node, false)
 	Utils.print_current_loop(loop)
-
+	redraw_lines()
+	
 func move_back_to_spawn(word_node: Word) -> void:
 	var drop_pos = word_node.global_position  # keep visual position before reparent
 	word_node.get_parent().remove_child(word_node)
@@ -180,3 +200,81 @@ func move_back_to_spawn(word_node: Word) -> void:
 	word_node.global_position = drop_pos  # keep position visually consistent
 	word_node.scale_to(word_node.normal_scale)
 	word_node.move_to_pos(word_node.spawn_point)  # tween to global position of spawn_point
+
+###################################################################################################
+## LINE STUFF																					 ##
+###################################################################################################
+
+func clear_lines():
+	# Remove existing lines (if any)
+	for line in line_nodes:
+		line.queue_free()
+	line_nodes.clear()
+
+func redraw_lines():
+	clear_lines()
+
+	if loop.size() < 2:
+		loop_complete = false
+		return
+
+	# Check if full loop is valid (first and last connect)
+	loop_complete = loop.size() >= 3 and loop[0].word[0] == loop[-1].word[-1]
+
+	for i in range(loop.size() - 1):
+		var start_word = loop[i]
+		var end_word = loop[i + 1]
+		if start_word.word[-1] == end_word.word[0]:
+			var line = Line2D.new()
+			line.default_color = Color(0.2, 0.8, 0.2) if loop_complete else Color(0.8, 0.2, 0.1)
+			line.width = 3.0
+			line.points = [
+				line_container.to_local(start_word.global_position),
+				line_container.to_local(end_word.global_position)
+			]
+			line_container.add_child(line)
+			line_nodes.append(line)
+
+	# Only draw final closing line if loop is actually valid
+	if loop_complete:
+		var first = loop[0]
+		var last = loop[-1]
+		var final_line = Line2D.new()
+		final_line.default_color = Color(0.2, 0.8, 0.2)
+		final_line.width = 3.0
+		final_line.points = [
+			line_container.to_local(last.global_position),
+			line_container.to_local(first.global_position)
+		]
+		line_container.add_child(final_line)
+		line_nodes.append(final_line)
+
+func update_lines(delta):
+	if loop.size() < 2 or line_nodes.size() == 0:
+		return
+
+	var index = 0
+	for i in range(loop.size() - 1):
+		var start_word = loop[i]
+		var end_word = loop[i + 1]
+		if start_word.word[-1] == end_word.word[0]:
+			var line = line_nodes[index]
+			line.points = [
+				line_container.to_local(start_word.global_position),
+				line_container.to_local(end_word.global_position)
+			]
+
+			if loop_complete:
+				pulse_time += delta * 4.0
+				line.width = 3.0 + sin(pulse_time) * 1.5
+			index += 1
+
+	if loop_complete and index < line_nodes.size():
+		var first = loop[0]
+		var last = loop[-1]
+		var final_line = line_nodes[index]
+		final_line.points = [
+			line_container.to_local(last.global_position),
+			line_container.to_local(first.global_position)
+		]
+		final_line.width = 3.0 + sin(pulse_time) * 1.5

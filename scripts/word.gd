@@ -7,6 +7,10 @@ static var z_max := 10
 @onready var label = %Label
 @onready var sprite = %Sprite
 
+const MAX_WIDTH = 55       # Or whatever width your sprite allows
+const MIN_FONT_SIZE = 45     # Avoid fonts getting too tiny
+const MAX_FONT_SIZE = 75     # Starting point for big text
+
 var next : Word = null
 var prev : Word = null
 
@@ -26,6 +30,7 @@ var tweening := false
 func _ready():
 	label.text = word
 	scale = normal_scale
+	fit_text_to_width()
 
 #func _draw():
 #	var region_size = sprite.region_rect.size * sprite.scale
@@ -59,13 +64,25 @@ func _unhandled_input(event):
 func move_to_pos(global_pos: Vector2) -> void:
 	tweening = true
 	var tween := get_tree().create_tween()
-	tween.tween_property(self, "position", get_parent().to_local(global_pos), 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	#tween.set_trans(Tween.TRANS_SINE) # standard linear
+	tween.set_trans(Tween.TRANS_BACK) # bouncy
+	#tween.set_trans(Tween.TRANS_ELASTIC) # very snappy, maybe for invalid motions?
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "position", get_parent().to_local(global_pos), 0.4)
 	
 	# when movement is over, set these variables
 	tween.finished.connect(func():
 		tweening = false
 		just_dropped = false
+		#bounce_scale()
 	)
+
+## very bouncy, cartoony reaction to being dropped off
+## currently not in use, but could be useful
+func bounce_scale():
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(1.2, 0.8), 0.1).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(self, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_BACK)
 
 func toggle_scale() -> void:
 	if (scale == normal_scale):
@@ -84,3 +101,21 @@ func _is_mouse_over() -> bool:
 	var bounds = Rect2(-region_size / 2, region_size)
 	var mouse_pos = to_local(get_viewport().get_mouse_position())
 	return bounds.has_point(mouse_pos)
+
+func fit_text_to_width():
+	var font: Font = label.get_theme_font("font")
+	var best_size := MIN_FONT_SIZE
+
+	for size in range(MAX_FONT_SIZE, MIN_FONT_SIZE - 1, -1):
+		var width := font.get_string_size(word, HORIZONTAL_ALIGNMENT_LEFT, size).x
+		if width <= MAX_WIDTH:
+			best_size = size
+			break
+
+	# Ensure label_settings exists
+	if label.label_settings == null:
+		label.label_settings = LabelSettings.new()
+	else:
+		label.label_settings = label.label_settings.duplicate()
+
+	label.label_settings.font_size = best_size

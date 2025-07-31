@@ -7,6 +7,7 @@ resource_local_to_scene = true
 load_path = "res://.godot/imported/looparea.png-8db85d4380b26c8ed705cb1a63b1ee8d.ctex"
 
 [node name="LoopArea" type="Node2D"]
+z_as_relative = false
 script = ExtResource("1_glom0")
 
 [node name="Sprite" type="Sprite2D" parent="."]

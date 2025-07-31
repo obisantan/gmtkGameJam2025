@@ -3,10 +3,10 @@ extends Node
 
 
 # Parameters for difficulty tuning
-var total_words := 10  # Total number of words in a level
+var total_words := 15  # Total number of words in a level
 var loop_size_range := Vector2i(4, 6)  # Min and max length of the valid loop
 var min_word_length := 4
-var max_word_length := 7
+var max_word_length := 10
 
 # Internal storage
 var all_words := []

@@ -8,8 +8,12 @@
 script = ExtResource("1_hxnpu")
 
 [node name="WordPool" parent="." instance=ExtResource("2_kwxyf")]
+unique_name_in_owner = true
+z_index = -1
 
 [node name="LoopArea" parent="." instance=ExtResource("2_n0hmi")]
+unique_name_in_owner = true
+z_index = -1
 position = Vector2(622, 115)
 
 [node name="MessageLabel" type="Label" parent="."]
@@ -50,3 +54,6 @@ offset_bottom = 276.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "RESET LOOP"
+
+[node name="LineContainer" type="Node2D" parent="."]
+unique_name_in_owner = true
