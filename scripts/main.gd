@@ -12,12 +12,18 @@ extends Node2D
 
 @onready var reset_button := %ResetButton
 @onready var restart_button := %RestartButton
+@onready var shuffle_button := %ShuffleButton
 
 var word_list = []
 var loop: Array[Word] = []
 var line_nodes: Array[Line2D] = []
 var loop_complete := false
 var pulse_time := 0.0
+
+## WORDPOOL GRID
+var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing
+var cols = 5
+var start_pos = Vector2(-270, -70)
 
 func _ready():
 	### TEST TODO
@@ -33,6 +39,8 @@ func register_events():
 	#Utils.event_button_pressed_reset.connect(on_reset_button)
 	restart_button.button_up.connect(on_restart_button)
 	#Utils.event_button_pressed_restart.connect(on_restart_button)	
+	shuffle_button.button_up.connect(on_shuffle_button)
+	#Utils.event_button_pressed_shuffle.connect(on_shuffle_button)	
 
 func on_reset_button():
 	clear_lines()
@@ -45,16 +53,28 @@ func on_reset_button():
 func on_restart_button():
 	get_tree().reload_current_scene()
 
+func on_shuffle_button():
+	var all_words := get_tree().get_nodes_in_group("words")
+	if all_words.size() <= 1:
+		return
+
+	# Shuffle all words
+	all_words.shuffle()
+
+	for i in range(all_words.size()):
+		var word_node = all_words[i]
+		var new_global_pos = start_pos + Vector2(i % cols, i / cols) * grid_size
+		word_node.spawn_point = word_pool.to_global(new_global_pos)
+
+		# Only move words that are currently in the pool
+		if word_node.get_parent() == word_pool:
+			word_node.move_to_pos(word_node.spawn_point)
 
 ###################################################################################################
 ## LOOP LOGIC																					 ##
 ###################################################################################################
 
 func spawn_word_nodes():
-	var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing
-	var cols = 5
-	var start_pos = Vector2(-270, -70)
-	
 	var word_scene = preload("res://scenes/word.tscn")
 	for i in range(word_list.size()):
 		var word_node = word_scene.instantiate()

@@ -3,6 +3,7 @@ extends Node
 
 signal event_button_pressed_reset
 signal event_button_pressed_restart
+signal event_button_pressed_shuffle
 
 enum Location {
 	POOL,

@@ -40,6 +40,21 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "RESTART GAME"
 
+[node name="ShuffleButton" type="Button" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 806.0
+offset_top = 341.0
+offset_right = 944.0
+offset_bottom = 372.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "SHUFFLE WORDS"
+
 [node name="ResetButton" type="Button" parent="."]
 unique_name_in_owner = true
 anchors_preset = 8
