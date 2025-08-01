@@ -4,7 +4,7 @@ extends Node2D
 @onready var sprite = $Sprite
 
 ## WORDPOOL GRID
-var spawn_points: Array[Vector2] = []
+var spawn_points: Array[Vector2] = [] # this holds all available spawn points in the word pool (only gets regenerated at level start)
 var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing
 var cols = 5
 var start_pos = Vector2(-270, -70)
@@ -52,10 +52,15 @@ func spawn_word_nodes(word_list: Array[String], needed_spawn_points: Array[Vecto
 		add_child(word_node)
 		word_node.global_position = needed_spawn_points[i]
 		word_node.spawn_point = word_node.global_position
+		word_node.spawn_in()
 
 func shuffle_words() -> void:
-	# TODO: only shuffle occupied slots
-	var all_words := get_tree().get_nodes_in_group("words")
+	var all_words := []
+	var all_spawn_points := []
+	for word_node in get_tree().get_nodes_in_group("words"):
+		if word_node.location == Utils.Location.POOL:
+			all_words.append(word_node)
+			all_spawn_points.append(word_node.spawn_point)
 	if all_words.size() <= 1:
 		return
 
@@ -64,9 +69,5 @@ func shuffle_words() -> void:
 
 	for i in range(all_words.size()):
 		var word_node = all_words[i]
-		var new_global_pos = start_pos + Vector2(i % cols, i / cols) * grid_size
-		word_node.spawn_point = self.to_global(new_global_pos)
-
-		# Only move words that are currently in the pool
-		if word_node.get_parent() == self:
-			word_node.move_to_pos(word_node.spawn_point)
+		word_node.spawn_point = all_spawn_points[i]
+		word_node.move_to_pos(word_node.spawn_point)

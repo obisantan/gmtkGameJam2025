@@ -163,7 +163,7 @@ func add_word_to_loop(word_node: Word):
 	var drop_pos = word_node.global_position
 	word_node.get_parent().remove_child(word_node)
 	loop_area.add_child(word_node)
-	word_node.current_location = Utils.Location.LOOP
+	word_node.location = Utils.Location.LOOP
 	word_node.global_position = drop_pos
 	word_node.scale_to(word_node.loop_scale)
 	arrange_loop_words()
@@ -246,7 +246,7 @@ func move_back_to_spawn(word_node: Word) -> void:
 	var drop_pos = word_node.global_position  # keep visual position before reparent
 	word_node.get_parent().remove_child(word_node)
 	word_pool.add_child(word_node)
-	word_node.current_location = Utils.Location.POOL
+	word_node.location = Utils.Location.POOL
 	word_node.global_position = drop_pos  # keep position visually consistent
 	word_node.scale_to(word_node.normal_scale)
 	word_node.move_to_pos(word_node.spawn_point)  # tween to global position of spawn_point

@@ -24,7 +24,7 @@ var loop_scale := Vector2(0.7, 0.7)  # adjust this to what looks good
 var tween: Tween = null
 
 ## location, movement and animation stuff
-var current_location := Utils.Location.POOL
+var location := Utils.Location.POOL
 var spawn_point := Vector2.ZERO
 var loop_point := Vector2.ZERO
 var drag_offset := Vector2.ZERO
@@ -86,8 +86,13 @@ func move_to_pos(global_pos: Vector2) -> void:
 ## currently not in use, but could be useful
 func bounce_scale():
 	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2(1.2, 0.8), 0.1).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(self, "scale", Vector2(0.8, 1.2), 0.2).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(self, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_BACK)
+
+## makes it look like word is appearing out of nowhere when spawning
+func spawn_in() -> void:
+	scale = Vector2.ZERO
+	bounce_scale()
 
 func toggle_scale() -> void:
 	if (scale == normal_scale):
