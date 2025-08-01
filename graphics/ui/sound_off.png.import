@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cp58ya07bwxb8"
-path="res://.godot/imported/looparea.png-8db85d4380b26c8ed705cb1a63b1ee8d.ctex"
+uid="uid://bj3yc2xot6x1g"
+path="res://.godot/imported/sound_off.png-2faddb5d7374ea120302566266fe4d05.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/looparea.png"
-dest_files=["res://.godot/imported/looparea.png-8db85d4380b26c8ed705cb1a63b1ee8d.ctex"]
+source_file="res://graphics/ui/sound_off.png"
+dest_files=["res://.godot/imported/sound_off.png-2faddb5d7374ea120302566266fe4d05.ctex"]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

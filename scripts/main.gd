@@ -12,6 +12,8 @@ extends Node2D
 @onready var message_label = %MessageLabel
 @onready var points_label = %PointsLabel
 @onready var curr_points_label = %CurrPointsLabel
+@onready var level_label = %LevelLabel
+@onready var loops_label = %LoopsLabel
 
 @onready var reset_button := %ResetButton
 @onready var restart_button := %RestartButton
@@ -32,18 +34,25 @@ var point_multipliers: Dictionary = {
 var level_point_goals: Dictionary = {
 	1: 100, 2: 200, 3: 300, 4: 500, 5: 1000, 6: 1200, 7: 1300, 8: 1400, 9: 1500, 10: 2000
 }
+# could be modified in the future, for now its just the round number
+var level_loop_amount: Dictionary = {
+	1: 2, 2: 3, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10
+}
+
 var total_points: int = 0
 var level_points: int = 0
 var current_loop_points: int = 0
 var current_level: int = 1
+var loops_submitted_in_level: int = 0
 var loops_left_in_level: int = 1
 
 func _ready():
 	### TEST TODO
 	submit_button.visible = false
 	current_level = 1
-	loops_left_in_level = 3
+	loops_left_in_level = level_loop_amount[current_level]
 	message_label.text = ""
+	calculate_points_and_update_ui()
 	register_events()
 	clear_lines()
 
@@ -64,7 +73,7 @@ func on_reset_button():
 		move_back_to_spawn(word_node)
 	loop = []
 	current_loop_points = 0
-	recalculate_loop_points()
+	calculate_points_and_update_ui()
 	submit_button.visible = false
 	message_label.text = "ℹ️ Loop Reset!"
 	print(loop)
@@ -91,6 +100,7 @@ func on_submit_button():
 		current_level += 1
 	else:
 		loops_left_in_level -= 1
+		loops_submitted_in_level += 1
 		if (loops_left_in_level == 0):
 			# TODO: game over screen (we do not execute rest of this function probably?)
 			return
@@ -170,11 +180,11 @@ func add_word_to_loop(word_node: Word):
 	check_loop_complete(word_node, true)
 	#Utils.print_current_loop(loop)
 	redraw_lines()
-	recalculate_loop_points()
+	calculate_points_and_update_ui()
 
 func arrange_loop_words():
-	var radius_x = 130.0  # horizontal radius (wider)
-	var radius_y = 85.0   # vertical radius (narrower)
+	var radius_x = 130.0  # horizontal radius (ellipse width)
+	var radius_y = 85.0   # vertical radius (ellipse height)
 	var center = loop_area.global_position
 	var count = loop.size()
 	if count == 0:
@@ -183,12 +193,29 @@ func arrange_loop_words():
 	var start_angle = PI
 	for i in range(count):
 		var angle = start_angle + i * TAU / float(count)
+
+		# Elliptical offset using both radii
 		var offset = Vector2(cos(angle) * radius_x, sin(angle) * radius_y)
 		var global_pos = center + offset
 
 		var current_word = loop[i]
+
+		# Set position
 		current_word.loop_point = global_pos
 		current_word.move_to_pos(global_pos)
+
+		# Set tangent rotation (for ellipse, approximate using angle)
+		#current_word.rotation = angle + PI / 2  # or -PI / 2 for reverse orientation
+		
+		# Approximate "stretch" along the radial direction
+		#var stretch_factor = 1.0 + 0.2 * sin(angle)  # vertical bulge
+		#current_word.scale = Vector2(1.1, stretch_factor)
+
+		# OPTIONAL: fake skew by offsetting the child label/sprite
+		#if current_word.has_node("Sprite"):
+		#	var sprite = current_word.get_node("Sprite")
+		#	sprite.position = Vector2(0, 5 * sin(angle))  # vertical push
+
 	redraw_lines()
 
 func check_loop_complete(word_node: Word, was_added: bool):
@@ -240,7 +267,7 @@ func remove_word_from_loop(word_node: Word):
 	check_loop_complete(word_node, false)
 	#Utils.print_current_loop(loop)
 	redraw_lines()
-	recalculate_loop_points()
+	calculate_points_and_update_ui()
 
 func move_back_to_spawn(word_node: Word) -> void:
 	var drop_pos = word_node.global_position  # keep visual position before reparent
@@ -249,14 +276,15 @@ func move_back_to_spawn(word_node: Word) -> void:
 	word_node.location = Utils.Location.POOL
 	word_node.global_position = drop_pos  # keep position visually consistent
 	word_node.scale_to(word_node.normal_scale)
+	word_node.rotation = 0
 	word_node.move_to_pos(word_node.spawn_point)  # tween to global position of spawn_point
 
-
-
-func recalculate_loop_points() -> void:
+func calculate_points_and_update_ui() -> void:
 	if loop.size() < 3:
-		points_label.text = "Points: %d" % level_points
-		curr_points_label.text = "0 x 0"
+		loops_label.text = "%s / %s Loops" % [loops_submitted_in_level, level_loop_amount[current_level]]
+		level_label.text = "Level %s" % current_level
+		points_label.text = "%s / %s Points" % [level_points, level_point_goals[current_level]]
+		curr_points_label.text = "- x -"
 		return
 
 	var points = 0
@@ -280,7 +308,7 @@ func remove_loop():
 	loop.clear()
 	current_loop_points = 0
 	clear_lines()
-	recalculate_loop_points()
+	calculate_points_and_update_ui()
 
 func get_words_currently_in_pool() -> Array[String]:
 	var result: Array[String] = []

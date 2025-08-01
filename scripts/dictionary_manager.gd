@@ -2,10 +2,10 @@
 extends Node
 
 # Parameters for difficulty tuning
-var total_words := 15  # Total number of words in a level
+var amount_of_words_per_level := 15  # Total number of words in a level
 var loop_size_range := Vector2i(4, 6)  # Min and max length of the valid loop
 var min_word_length := 4
-var max_word_length := 10
+var max_word_length := 9
 
 # Internal storage
 var all_words := []
@@ -73,7 +73,7 @@ func get_level_words() -> Array[String]:
 			return []
 
 	var result := loop.duplicate()
-	while result.size() < total_words:
+	while result.size() < amount_of_words_per_level:
 		var word = filtered_words.pick_random()
 		if word not in result:
 			result.append(word)

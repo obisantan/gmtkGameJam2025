@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1gckh2mvdeso"
-path="res://.godot/imported/speaker-off.png-de16cd098674598d0ada699f84a1881b.ctex"
+uid="uid://bx36bvrp3mvyy"
+path="res://.godot/imported/window.png-ee59abc5c4bf1c2cb621432970407d87.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/speaker-off.png"
-dest_files=["res://.godot/imported/speaker-off.png-de16cd098674598d0ada699f84a1881b.ctex"]
+source_file="res://graphics/ui/window.png"
+dest_files=["res://.godot/imported/window.png-ee59abc5c4bf1c2cb621432970407d87.ctex"]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

@@ -3,6 +3,8 @@ extends Node2D
 
 @onready var sprite = $Sprite
 
+var word_list_debug: Array[String] = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
+
 ## WORDPOOL GRID
 var spawn_points: Array[Vector2] = [] # this holds all available spawn points in the word pool (only gets regenerated at level start)
 var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing
@@ -10,9 +12,8 @@ var cols = 5
 var start_pos = Vector2(-270, -70)
 
 func _ready():
-	var word_list: Array[String] = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
-	#var word_list: Array[String] = DictionaryManager.get_level_words()
-	generate_spawn_points(DictionaryManager.total_words)
+	var word_list: Array[String] = word_list_debug if Utils.debugging else DictionaryManager.get_level_words()
+	generate_spawn_points(DictionaryManager.amount_of_words_per_level)
 	spawn_word_nodes(word_list)
 
 func _draw():
@@ -21,7 +22,8 @@ func _draw():
 
 func is_inside(global_point: Vector2) -> bool:
 	var region_size = sprite.region_rect.size * sprite.scale
-	var bounds = Rect2(-region_size / 2, region_size)
+	# the *4 at the end makes it reach way outside the screen, making it possible to drop off words without hitting the area exactly
+	var bounds = Rect2(-region_size / 2, region_size * 4)
 	var local_pos = to_local(global_point)
 	return bounds.has_point(local_pos)
 

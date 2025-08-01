@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ck0e0y7rxcjhf"
-path="res://.godot/imported/wordpool.png-97c8597287736eaabeb8228f94008747.ctex"
+uid="uid://b0ws8whmsky40"
+path="res://.godot/imported/rounded_panel.png-da4c71902a08a1b4648abcd8e0d380ad.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/wordpool.png"
-dest_files=["res://.godot/imported/wordpool.png-97c8597287736eaabeb8228f94008747.ctex"]
+source_file="res://graphics/ui/rounded_panel.png"
+dest_files=["res://.godot/imported/rounded_panel.png-da4c71902a08a1b4648abcd8e0d380ad.ctex"]
 
 [params]
 

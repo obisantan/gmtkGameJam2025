@@ -1,15 +1,15 @@
 [gd_scene load_steps=4 format=3 uid="uid://ddasgakxbsmt0"]
 
-[ext_resource type="Texture2D" uid="uid://b43ypbhnerk3f" path="res://graphics/speaker.png" id="1_l375l"]
-[ext_resource type="Texture2D" uid="uid://b1gckh2mvdeso" path="res://graphics/speaker-off.png" id="2_mqmjh"]
+[ext_resource type="Texture2D" uid="uid://cf4vp1b87taxp" path="res://graphics/ui/sound_on.png" id="1_ktmjb"]
+[ext_resource type="Texture2D" uid="uid://bj3yc2xot6x1g" path="res://graphics/ui/sound_off.png" id="2_pp432"]
 [ext_resource type="Script" path="res://scripts/mute_button.gd" id="3_bs64v"]
 
 [node name="MuteButton" type="TextureButton"]
-offset_right = 32.0
-offset_bottom = 32.0
+offset_right = 64.0
+offset_bottom = 64.0
 toggle_mode = true
-texture_normal = ExtResource("1_l375l")
-texture_pressed = ExtResource("2_mqmjh")
+texture_normal = ExtResource("1_ktmjb")
+texture_pressed = ExtResource("2_pp432")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_bs64v")

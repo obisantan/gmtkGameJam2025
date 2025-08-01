@@ -7,9 +7,9 @@ static var z_max := 10
 @onready var label = %Label
 @onready var sprite = %Sprite
 
-const MAX_WIDTH = 55       # Or whatever width your sprite allows
-const MIN_FONT_SIZE = 45     # Avoid fonts getting too tiny
-const MAX_FONT_SIZE = 75     # Starting point for big text
+const MAX_WIDTH = 48 # Or whatever width your sprite allows
+const MIN_FONT_SIZE = 120 # Avoid fonts getting too tiny
+const MAX_FONT_SIZE = 180 # Starting point for big text
 
 ## currently not in use
 var next : Word = null
@@ -51,7 +51,7 @@ func _unhandled_input(event):
 					just_dropped = false
 					drag_offset = global_position - event.position
 					z_index = 1000
-					bounce_scale(scale)
+					if !tweening: bounce_scale(scale)
 					get_viewport().set_input_as_handled()
 					#print("%s: %s, z-max: %s" % [self.word, z_index, z_max])
 			else:
@@ -81,12 +81,17 @@ func move_to_pos(global_pos: Vector2) -> void:
 		just_dropped = false
 	)
 
-## very bouncy, cartoony reaction to being dropped off
-## currently not in use, but could be useful
+## very bouncy, cartoony reaction to being clicked on
 func bounce_scale(goal_scale: Vector2):
+	tweening = true
 	var tween = create_tween()
 	tween.tween_property(self, "scale", goal_scale * Vector2(0.8, 1.2), 0.2).set_trans(Tween.TRANS_BACK)
 	tween.tween_property(self, "scale", goal_scale, 0.15).set_trans(Tween.TRANS_BACK)
+
+	# when movement is over, set these variables
+	tween.finished.connect(func():
+		tweening = false
+	)
 
 ## makes it look like word is appearing out of nowhere when spawning
 func spawn_in() -> void:

@@ -6,12 +6,8 @@ signal event_button_pressed_restart
 signal event_button_pressed_shuffle
 signal event_button_pressed_submit
 
-enum Location {
-	POOL,
-	LOOP
-}
-
-
+enum Location {POOL, LOOP}
+var debugging: bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

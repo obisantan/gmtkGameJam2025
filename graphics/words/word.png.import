@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3b5nhnce1i8x"
-path="res://.godot/imported/word_tile.png-c3517895d784820aa6cd25b1f4dd99b1.ctex"
+uid="uid://myntwla0qcv"
+path="res://.godot/imported/word.png-281bd573b1b3480cf2d04564b5332e08.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/words/word_tile.png"
-dest_files=["res://.godot/imported/word_tile.png-c3517895d784820aa6cd25b1f4dd99b1.ctex"]
+source_file="res://graphics/words/word.png"
+dest_files=["res://.godot/imported/word.png-281bd573b1b3480cf2d04564b5332e08.ctex"]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

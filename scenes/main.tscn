@@ -1,13 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://be6uj45ihvs4j"]
+[gd_scene load_steps=10 format=3 uid="uid://be6uj45ihvs4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hxnpu"]
 [ext_resource type="PackedScene" uid="uid://b682354tsfxxv" path="res://scenes/word_pool.tscn" id="2_kwxyf"]
 [ext_resource type="PackedScene" uid="uid://dmm1dv8luwsh0" path="res://scenes/loop_area.tscn" id="2_n0hmi"]
 [ext_resource type="Script" path="res://scripts/credits.gd" id="4_u7uni"]
+[ext_resource type="Texture2D" uid="uid://b0ws8whmsky40" path="res://graphics/ui/rounded_panel.png" id="5_evi7c"]
 [ext_resource type="PackedScene" uid="uid://ddasgakxbsmt0" path="res://scenes/mute_button.tscn" id="5_moww0"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_tuile"]
-font_size = 30
+[ext_resource type="Texture2D" uid="uid://bpnsb6by47vpw" path="res://graphics/ui/title.png" id="6_2f6hi"]
+[ext_resource type="LabelSettings" uid="uid://be3dgkubpb7cx" path="res://graphics/words/label_settings_standard.tres" id="7_fnlts"]
+[ext_resource type="LabelSettings" uid="uid://cxcixxmf6x0u0" path="res://graphics/words/label_settings_mult.tres" id="8_6kcac"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_hxnpu")
@@ -15,35 +16,12 @@ script = ExtResource("1_hxnpu")
 [node name="WordPool" parent="." instance=ExtResource("2_kwxyf")]
 unique_name_in_owner = true
 z_index = -1
-position = Vector2(584, 410)
+position = Vector2(599, 411)
 
 [node name="LoopArea" parent="." instance=ExtResource("2_n0hmi")]
 unique_name_in_owner = true
 z_index = -1
-position = Vector2(542, 119)
-
-[node name="CurrPointsLabel" type="Label" parent="."]
-unique_name_in_owner = true
-offset_left = -3.0
-offset_top = 41.0
-offset_right = 212.0
-offset_bottom = 83.0
-text = "0 x 0"
-label_settings = SubResource("LabelSettings_tuile")
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="PointsLabel" type="Label" parent="."]
-unique_name_in_owner = true
-offset_left = -4.0
-offset_top = 11.0
-offset_right = 211.0
-offset_bottom = 34.0
-text = "Points: 0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
+position = Vector2(541, 117)
 
 [node name="MessageLabel" type="Label" parent="."]
 unique_name_in_owner = true
@@ -129,10 +107,10 @@ visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 145.0
-offset_right = 525.0
-offset_bottom = 345.0
+offset_left = 14.0
+offset_top = 265.0
+offset_right = 514.0
+offset_bottom = 565.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -142,12 +120,106 @@ text = "[b]Music:[/b]
 [url=incompetech.com]\"Late Night Radio\" Kevin MacLeod[/url]
 [url=http://creativecommons.org/licenses/by/4.0/]Licensed under Creative Commons: By Attribution 4.0 License[/url]
 
-[b]Speaker Icons:[/b]
+[b]Font:[/b]
+[url=https://github.com/nguyentype/vinasans]Copyright 2023 The Vina Sans Project Authors[/url]
+[url=http://scripts.sil.org/OFL]Licensed under SIL OFL 1.1[/url]
+
+[b]Mute Button Icons:[/b]
 [url=https://creativecommons.org/licenses/by/3.0/]Delapouite under CC BY 3.0[/url]"
 script = ExtResource("4_u7uni")
 
+[node name="UI" type="NinePatchRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 45.0
+offset_top = 32.0
+offset_right = 301.0
+offset_bottom = 281.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_evi7c")
+region_rect = Rect2(0, 0, 1800, 608.951)
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 30
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Title" type="NinePatchRect" parent="UI"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 134.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("6_2f6hi")
+patch_margin_left = 20
+patch_margin_top = 20
+patch_margin_right = 20
+patch_margin_bottom = 30
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="LevelLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 52.0
+grow_horizontal = 2
+text = "Level X"
+label_settings = ExtResource("7_fnlts")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="PointsLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 39.0
+offset_right = 256.0
+offset_bottom = 91.0
+text = "0 / X Points"
+label_settings = ExtResource("7_fnlts")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LoopsLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 79.0
+offset_right = 256.0
+offset_bottom = 131.0
+text = "0 / X Loops"
+label_settings = ExtResource("7_fnlts")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrPointsLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.935743
+anchor_right = 1.0
+anchor_bottom = 0.935743
+offset_top = -98.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "- x -"
+label_settings = ExtResource("8_6kcac")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="MuteButton" parent="." instance=ExtResource("5_moww0")]
-offset_left = 34.0
-offset_top = 229.0
-offset_right = 66.0
-offset_bottom = 261.0
+offset_left = 196.0
+offset_top = 488.0
+offset_right = 228.0
+offset_bottom = 520.0
