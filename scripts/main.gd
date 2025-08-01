@@ -18,8 +18,6 @@ extends Node2D
 @onready var shuffle_button := %ShuffleButton
 @onready var submit_button := %SubmitButton
 
-@onready var music := preload("res://audio/Late Night Radio.mp3")
-
 ## TRACKING WORDS AND LOOPS
 var previously_used_words: Array[String] = []
 var loop: Array[Word] = []
@@ -29,7 +27,7 @@ var pulse_time: float = 0.0
 
 ## POINTS AND LEVEL LOGIC
 var point_multipliers: Dictionary = {
-	3: 1.0, 4: 1.1, 5: 1.2, 6: 1.3, 7: 1.5, 8: 1.75, 9: 2.0, 10: 2.5, 11: 3.0, 12: 3.5, 13: 4.0, 14: 5.0, 15: 10.0
+	3: 1.0, 4: 1.0, 5: 1.2, 6: 1.3, 7: 1.5, 8: 2.0, 9: 2.0, 10: 2.5, 11: 3.0, 12: 3.5, 13: 4.0, 14: 5.0, 15: 10.0
 }
 var level_point_goals: Dictionary = {
 	1: 100, 2: 200, 3: 300, 4: 500, 5: 1000, 6: 1200, 7: 1300, 8: 1400, 9: 1500, 10: 2000
@@ -42,7 +40,6 @@ var loops_left_in_level: int = 1
 
 func _ready():
 	### TEST TODO
-	SceneManager.play_music(music)
 	submit_button.visible = false
 	current_level = 1
 	loops_left_in_level = 3

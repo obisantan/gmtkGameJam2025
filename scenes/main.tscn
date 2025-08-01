@@ -149,5 +149,5 @@ script = ExtResource("4_u7uni")
 [node name="MuteButton" parent="." instance=ExtResource("5_moww0")]
 offset_left = 34.0
 offset_top = 229.0
-offset_right = 98.0
-offset_bottom = 293.0
+offset_right = 66.0
+offset_bottom = 261.0

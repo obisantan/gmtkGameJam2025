@@ -8,6 +8,10 @@ var default_volume
 @onready var master_bus = AudioServer.get_bus_index("Master")
 @onready var music_bus = AudioServer.get_bus_index("Music")
 @onready var sfx_bus = AudioServer.get_bus_index("SFX")
+@onready var music := preload("res://audio/Late Night Radio.mp3")
+
+func _ready():
+	play_music(music)
 
 ## will use this for main menu i guess? could be useful in the future
 # Add effects (example: low-pass filter on music)

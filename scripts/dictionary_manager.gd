@@ -35,8 +35,8 @@ func load_words(path: String):
 			words_by_first_letter[first].append(word)
 	file.close()
 
-func create_valid_loop() -> Array:
-	var loop = []
+func create_valid_loop() -> Array[String]:
+	var loop: Array[String] = []
 	var tries = 100
 	var loop_size = randi_range(loop_size_range.x, loop_size_range.y)
 
@@ -63,7 +63,7 @@ func create_valid_loop() -> Array:
 
 	return []  # Fallback if no loop found
 
-func get_level_words() -> Array:
+func get_level_words() -> Array[String]:
 	var loop = create_valid_loop()
 	if loop.is_empty():
 		loop = create_valid_loop()
@@ -72,7 +72,7 @@ func get_level_words() -> Array:
 			print("Could not generate a valid word loop for level.")
 			return []
 
-	var result = loop.duplicate()
+	var result := loop.duplicate()
 	while result.size() < total_words:
 		var word = filtered_words.pick_random()
 		if word not in result:
