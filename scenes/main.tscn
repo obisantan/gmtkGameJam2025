@@ -30,6 +30,7 @@ text = "0 x 0"
 label_settings = SubResource("LabelSettings_tuile")
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="PointsLabel" type="Label" parent="."]
 unique_name_in_owner = true
@@ -40,6 +41,7 @@ offset_bottom = 34.0
 text = "Points: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="MessageLabel" type="Label" parent="."]
 unique_name_in_owner = true
@@ -50,6 +52,7 @@ offset_bottom = 269.0
 text = "THIS IS WHERE TEXT GOES"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="RestartButton" type="Button" parent="."]
 unique_name_in_owner = true
@@ -65,6 +68,7 @@ offset_bottom = 520.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "RESTART GAME"
+metadata/_edit_use_anchors_ = true
 
 [node name="ShuffleButton" type="Button" parent="."]
 unique_name_in_owner = true
@@ -80,6 +84,7 @@ offset_bottom = 163.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "SHUFFLE WORDS"
+metadata/_edit_use_anchors_ = true
 
 [node name="SubmitButton" type="Button" parent="."]
 unique_name_in_owner = true
@@ -96,6 +101,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 22
 text = "SUBMIT LOOP"
+metadata/_edit_use_anchors_ = true
 
 [node name="ResetButton" type="Button" parent="."]
 unique_name_in_owner = true
@@ -111,6 +117,7 @@ offset_bottom = 126.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "RESET LOOP"
+metadata/_edit_use_anchors_ = true
 
 [node name="LineContainer" type="Node2D" parent="."]
 unique_name_in_owner = true

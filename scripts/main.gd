@@ -18,33 +18,33 @@ extends Node2D
 @onready var shuffle_button := %ShuffleButton
 @onready var submit_button := %SubmitButton
 
-var word_list: Array[String] = []
+## TRACKING WORDS AND LOOPS
+var previously_used_words: Array[String] = []
 var loop: Array[Word] = []
 var line_nodes: Array[Line2D] = []
 var loop_complete: bool = false
 var pulse_time: float = 0.0
 
+## POINTS AND LEVEL LOGIC
 var point_multipliers: Dictionary = {
 	3: 1.0, 4: 1.1, 5: 1.2, 6: 1.3, 7: 1.5, 8: 1.75, 9: 2.0, 10: 2.5, 11: 3.0, 12: 3.5, 13: 4.0, 14: 5.0, 15: 10.0
 }
-
+var level_point_goals: Dictionary = {
+	1: 100, 2: 200, 3: 300, 4: 500, 5: 1000, 6: 1200, 7: 1300, 8: 1400, 9: 1500, 10: 2000
+}
 var total_points: int = 0
 var level_points: int = 0
 var current_loop_points: int = 0
-
-## WORDPOOL GRID
-var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing
-var cols = 5
-var start_pos = Vector2(-270, -70)
+var current_level: int = 1
+var loops_left_in_level: int = 1
 
 func _ready():
 	### TEST TODO
-	word_list = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
-	#word_list = DictionaryManager.get_level_words()
 	submit_button.visible = false
+	current_level = 1
+	loops_left_in_level = 3
 	message_label.text = ""
 	register_events()
-	spawn_word_nodes()
 	clear_lines()
 
 func register_events():
@@ -73,43 +73,36 @@ func on_restart_button():
 	get_tree().reload_current_scene()
 
 func on_shuffle_button():
-	var all_words := get_tree().get_nodes_in_group("words")
-	if all_words.size() <= 1:
-		return
-
-	# Shuffle all words
-	all_words.shuffle()
-
-	for i in range(all_words.size()):
-		var word_node = all_words[i]
-		var new_global_pos = start_pos + Vector2(i % cols, i / cols) * grid_size
-		word_node.spawn_point = word_pool.to_global(new_global_pos)
-
-		# Only move words that are currently in the pool
-		if word_node.get_parent() == word_pool:
-			word_node.move_to_pos(word_node.spawn_point)
+	word_pool.shuffle_words()
 
 func on_submit_button():
+	# before removing loop, we need to check how many words need to be replaced in the word pool, and where they spawned
+	var amount_of_words_needed = loop.size()
+	var new_spawn_points: Array[Vector2]
+	for word_node in loop:
+		new_spawn_points.append(word_node.spawn_point)
+	
 	# award points
 	level_points += current_loop_points
-	current_loop_points = 0
-	# TODO: if total points are higher than needed points for round, advance to next round
-	# TODO: if total points are less than needed points for round, reduce number of loops per round and start new round (filling up board, having current loop disappear)
-	# TODO: if total points are less and we are out of loops per round, give game over screen
-	recalculate_loop_points()
+	remove_loop()
+
+	if (level_points >= level_point_goals[current_level]):
+		# TODO: if total points are higher than needed points for round, advance to next round
+		current_level += 1
+	else:
+		loops_left_in_level -= 1
+		if (loops_left_in_level == 0):
+			# TODO: game over screen (we do not execute rest of this function probably?)
+			return
+		else:
+			# if total points are less than needed points for round, reduce number of loops per round and start new round
+			var new_words = DictionaryManager.refill_word_pool(previously_used_words, get_words_currently_in_pool(), amount_of_words_needed)
+			word_pool.spawn_word_nodes(new_words, new_spawn_points)
+			print(new_words)
 
 ###################################################################################################
 ## LOOP LOGIC																					 	##
 ###################################################################################################
-
-func spawn_word_nodes():
-	var word_scene = preload("res://scenes/word.tscn")
-	for i in range(word_list.size()):
-		var word_node = word_scene.instantiate()
-		word_node.word = word_list[i]
-		word_node.global_position = start_pos + Vector2(i % cols, i / cols) * grid_size
-		word_pool.add_child(word_node)
-		word_node.spawn_point = word_node.global_position
 
 func _process(delta):
 	# loops over all words assigned to word_pool
@@ -175,7 +168,7 @@ func add_word_to_loop(word_node: Word):
 	word_node.scale_to(word_node.loop_scale)
 	arrange_loop_words()
 	check_loop_complete(word_node, true)
-	Utils.print_current_loop(loop)
+	#Utils.print_current_loop(loop)
 	redraw_lines()
 	recalculate_loop_points()
 
@@ -245,7 +238,7 @@ func remove_word_from_loop(word_node: Word):
 	#rearrange stuff
 	arrange_loop_words()
 	check_loop_complete(word_node, false)
-	Utils.print_current_loop(loop)
+	#Utils.print_current_loop(loop)
 	redraw_lines()
 	recalculate_loop_points()
 
@@ -277,6 +270,24 @@ func recalculate_loop_points() -> void:
 	points *= curr_mult
 	current_loop_points = points
 
+func remove_loop():
+	for word_node in loop:
+		previously_used_words.append(word_node.word)
+		var tween = create_tween()
+		tween.tween_property(word_node, "modulate:a", 0.0, 0.4).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(word_node, "scale", Vector2(1.2, 1.2), 0.4)
+		tween.tween_callback(Callable(word_node, "queue_free"))
+	loop.clear()
+	current_loop_points = 0
+	clear_lines()
+	recalculate_loop_points()
+
+func get_words_currently_in_pool() -> Array[String]:
+	var result: Array[String] = []
+	for word_node in word_pool.get_children():
+		if word_node.is_in_group("words"):
+			result.append(word_node.word)
+	return result
 
 ###################################################################################################
 ## LINE STUFF																					 	##
@@ -304,7 +315,7 @@ func redraw_lines():
 		if start_word.word[-1] == end_word.word[0]:
 			var line = Line2D.new()
 			line.default_color = Color(0.2, 0.8, 0.2) if loop_complete else Color(0.8, 0.2, 0.1)
-			line.width = 3.0
+			line.width = 5.0
 			line.points = [
 				line_container.to_local(start_word.global_position),
 				line_container.to_local(end_word.global_position)
@@ -318,7 +329,7 @@ func redraw_lines():
 		var last = loop[-1]
 		var final_line = Line2D.new()
 		final_line.default_color = Color(0.2, 0.8, 0.2)
-		final_line.width = 3.0
+		final_line.width = 8.0
 		final_line.points = [
 			line_container.to_local(last.global_position),
 			line_container.to_local(first.global_position)

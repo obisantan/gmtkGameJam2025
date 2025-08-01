@@ -1,7 +1,6 @@
 ### GLOBAL PRELOAD - DictionaryManager
 extends Node
 
-
 # Parameters for difficulty tuning
 var total_words := 15  # Total number of words in a level
 var loop_size_range := Vector2i(4, 6)  # Min and max length of the valid loop
@@ -70,7 +69,6 @@ func get_level_words() -> Array:
 		loop = create_valid_loop()
 
 		if loop.is_empty():
-			#push_warning("Could not generate a valid word loop for level.")
 			print("Could not generate a valid word loop for level.")
 			return []
 
@@ -82,3 +80,62 @@ func get_level_words() -> Array:
 
 	result.shuffle()
 	return result
+
+func refill_word_pool(previously_used_words: Array[String], existing_words: Array[String], amount_needed: int) -> Array[String]:
+	var candidates: Array[String] = []
+	var banned_words := previously_used_words + existing_words
+
+	# Start from words not previously used or already on screen
+	for word in filtered_words:
+		if not banned_words.has(word):
+			candidates.append(word)
+
+	var tries := 100
+	while tries > 0:
+		var new_words : Array[String] = []
+		var shuffled := candidates.duplicate()
+		shuffled.shuffle()
+
+		for i in range(min(amount_needed, shuffled.size())):
+			new_words.append(shuffled[i])
+
+		var test_pool: Array[String] = existing_words + new_words
+		if has_valid_loop(test_pool):
+			return new_words  # ✅ Success
+
+		tries -= 1
+
+	push_error("❌ DictionaryManager: Couldn't generate valid new words for pool.")
+	return []  # fallback — better than crash
+
+func has_valid_loop(words: Array[String]) -> bool:
+	var map := {}  # first letter → list of words
+	for word in words:
+		var first = word[0]
+		if not map.has(first):
+			map[first] = []
+		map[first].append(word)
+
+	for word in words:
+		var visited : Array[String] = [word]
+		if _search_loop(word, word, words, visited, map):
+			return true
+
+	return false
+
+func _search_loop(start_word: String, current_word: String, all_words: Array[String], visited: Array[String], map: Dictionary) -> bool:
+	if visited.size() >= 3 and current_word[-1] == start_word[0]:
+		return true  # loop complete
+
+	var next_candidates = map.get(current_word[-1])
+	if next_candidates == null:
+		return false
+
+	for next_word in next_candidates:
+		if not visited.has(next_word):
+			visited.append(next_word)
+			if _search_loop(start_word, next_word, all_words, visited, map):
+				return true
+			visited.pop_back()
+
+	return false
