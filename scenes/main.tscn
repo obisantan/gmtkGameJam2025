@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://be6uj45ihvs4j"]
+[gd_scene load_steps=7 format=3 uid="uid://be6uj45ihvs4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hxnpu"]
 [ext_resource type="PackedScene" uid="uid://b682354tsfxxv" path="res://scenes/word_pool.tscn" id="2_kwxyf"]
 [ext_resource type="PackedScene" uid="uid://dmm1dv8luwsh0" path="res://scenes/loop_area.tscn" id="2_n0hmi"]
+[ext_resource type="Script" path="res://scripts/credits.gd" id="4_u7uni"]
+[ext_resource type="PackedScene" uid="uid://ddasgakxbsmt0" path="res://scenes/mute_button.tscn" id="5_moww0"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tuile"]
 font_size = 30
@@ -121,3 +123,31 @@ metadata/_edit_use_anchors_ = true
 
 [node name="LineContainer" type="Node2D" parent="."]
 unique_name_in_owner = true
+
+[node name="Credits" type="RichTextLabel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 145.0
+offset_right = 525.0
+offset_bottom = 345.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "[b]Music:[/b]
+[url=incompetech.com]\"Late Night Radio\" Kevin MacLeod[/url]
+[url=http://creativecommons.org/licenses/by/4.0/]Licensed under Creative Commons: By Attribution 4.0 License[/url]
+
+[b]Speaker Icons:[/b]
+[url=https://creativecommons.org/licenses/by/3.0/]Delapouite under CC BY 3.0[/url]"
+script = ExtResource("4_u7uni")
+
+[node name="MuteButton" parent="." instance=ExtResource("5_moww0")]
+offset_left = 34.0
+offset_top = 229.0
+offset_right = 98.0
+offset_bottom = 293.0

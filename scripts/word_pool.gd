@@ -47,8 +47,7 @@ func spawn_word_nodes(word_list: Array[String], needed_spawn_points: Array[Vecto
 		var word_node = word_scene.instantiate()
 		word_node.word = word_list[i]
 
-		## VERY IMPORTANT: first, set global position, then add word to new parent, THEN save the spawn point
-		# hold on, apparently not?
+		## VERY IMPORTANT: first, add word to parent, then set global position and save the spawn point
 		add_child(word_node)
 		word_node.global_position = needed_spawn_points[i]
 		word_node.spawn_point = word_node.global_position

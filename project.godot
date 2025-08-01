@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 
 DictionaryManager="*res://scripts/dictionary_manager.gd"
 Utils="*res://scripts/utils.gd"
+SceneManager="*res://scripts/scene_manager.gd"
 
 [display]
 
@@ -31,5 +32,6 @@ words=""
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=2
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

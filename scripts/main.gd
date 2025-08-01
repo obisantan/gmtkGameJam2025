@@ -18,6 +18,8 @@ extends Node2D
 @onready var shuffle_button := %ShuffleButton
 @onready var submit_button := %SubmitButton
 
+@onready var music := preload("res://audio/Late Night Radio.mp3")
+
 ## TRACKING WORDS AND LOOPS
 var previously_used_words: Array[String] = []
 var loop: Array[Word] = []
@@ -40,6 +42,7 @@ var loops_left_in_level: int = 1
 
 func _ready():
 	### TEST TODO
+	SceneManager.play_music(music)
 	submit_button.visible = false
 	current_level = 1
 	loops_left_in_level = 3

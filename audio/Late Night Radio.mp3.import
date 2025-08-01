@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://d5rj0gd2a8ul"
+path="res://.godot/imported/Late Night Radio.mp3-445116699c83f16636a32aa1bceac521.mp3str"
+
+[deps]
+
+source_file="res://audio/Late Night Radio.mp3"
+dest_files=["res://.godot/imported/Late Night Radio.mp3-445116699c83f16636a32aa1bceac521.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

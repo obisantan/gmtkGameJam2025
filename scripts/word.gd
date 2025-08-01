@@ -51,7 +51,7 @@ func _unhandled_input(event):
 					just_dropped = false
 					drag_offset = global_position - event.position
 					z_index = 1000
-					toggle_scale()
+					bounce_scale(scale)
 					get_viewport().set_input_as_handled()
 					#print("%s: %s, z-max: %s" % [self.word, z_index, z_max])
 			else:
@@ -79,20 +79,19 @@ func move_to_pos(global_pos: Vector2) -> void:
 	tween.finished.connect(func():
 		tweening = false
 		just_dropped = false
-		#bounce_scale()
 	)
 
 ## very bouncy, cartoony reaction to being dropped off
 ## currently not in use, but could be useful
-func bounce_scale():
+func bounce_scale(goal_scale: Vector2):
 	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector2(0.8, 1.2), 0.2).set_trans(Tween.TRANS_BACK)
-	tween.tween_property(self, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(self, "scale", goal_scale * Vector2(0.8, 1.2), 0.2).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(self, "scale", goal_scale, 0.15).set_trans(Tween.TRANS_BACK)
 
 ## makes it look like word is appearing out of nowhere when spawning
 func spawn_in() -> void:
 	scale = Vector2.ZERO
-	bounce_scale()
+	bounce_scale(normal_scale)
 
 func toggle_scale() -> void:
 	if (scale == normal_scale):

@@ -1,10 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://gamui70xr8lc"]
 
 [ext_resource type="Script" path="res://scripts/word.gd" id="1_atc6g"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_r15ua"]
-resource_local_to_scene = true
-load_path = "res://.godot/imported/word_tile.png-45d16669185f60e3250f77335f9cfd5c.ctex"
+[ext_resource type="Texture2D" uid="uid://b3b5nhnce1i8x" path="res://graphics/words/word_tile.png" id="2_e5yax"]
 
 [sub_resource type="SystemFont" id="SystemFont_devcj"]
 font_names = PackedStringArray("Bahnschrift")
@@ -23,7 +20,7 @@ script = ExtResource("1_atc6g")
 [node name="Sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 scale = Vector2(0.3, 0.3)
-texture = SubResource("CompressedTexture2D_r15ua")
+texture = ExtResource("2_e5yax")
 region_enabled = true
 region_rect = Rect2(40, 149, 397, 178)
 
