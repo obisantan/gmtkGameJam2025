@@ -13,4 +13,4 @@ script = ExtResource("1_glom0")
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = SubResource("CompressedTexture2D_5ksk6")
 region_enabled = true
-region_rect = Rect2(0, 5.5, 650, 213)
+region_rect = Rect2(0, 5.5, 371.333, 213)

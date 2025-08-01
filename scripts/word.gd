@@ -11,14 +11,19 @@ const MAX_WIDTH = 55       # Or whatever width your sprite allows
 const MIN_FONT_SIZE = 45     # Avoid fonts getting too tiny
 const MAX_FONT_SIZE = 75     # Starting point for big text
 
+## currently not in use
 var next : Word = null
 var prev : Word = null
 
+var word: String = ""
+var points: int = 10
+
+## scaling stuff
 var normal_scale := Vector2.ONE
 var loop_scale := Vector2(0.7, 0.7)  # adjust this to what looks good
 var tween: Tween = null
 
-var word: String = ""
+## location, movement and animation stuff
 var current_location := Utils.Location.POOL
 var spawn_point := Vector2.ZERO
 var loop_point := Vector2.ZERO

@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://be6uj45ihvs4j"]
+[gd_scene load_steps=5 format=3 uid="uid://be6uj45ihvs4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hxnpu"]
 [ext_resource type="PackedScene" uid="uid://b682354tsfxxv" path="res://scenes/word_pool.tscn" id="2_kwxyf"]
 [ext_resource type="PackedScene" uid="uid://dmm1dv8luwsh0" path="res://scenes/loop_area.tscn" id="2_n0hmi"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tuile"]
+font_size = 30
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_hxnpu")
@@ -10,18 +13,41 @@ script = ExtResource("1_hxnpu")
 [node name="WordPool" parent="." instance=ExtResource("2_kwxyf")]
 unique_name_in_owner = true
 z_index = -1
+position = Vector2(584, 410)
 
 [node name="LoopArea" parent="." instance=ExtResource("2_n0hmi")]
 unique_name_in_owner = true
 z_index = -1
-position = Vector2(622, 115)
+position = Vector2(542, 119)
+
+[node name="CurrPointsLabel" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -3.0
+offset_top = 41.0
+offset_right = 212.0
+offset_bottom = 83.0
+text = "0 x 0"
+label_settings = SubResource("LabelSettings_tuile")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PointsLabel" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -4.0
+offset_top = 11.0
+offset_right = 211.0
+offset_bottom = 34.0
+text = "Points: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MessageLabel" type="Label" parent="."]
 unique_name_in_owner = true
-offset_left = 359.0
-offset_top = 243.0
-offset_right = 574.0
-offset_bottom = 266.0
+offset_left = 434.0
+offset_top = 246.0
+offset_right = 649.0
+offset_bottom = 269.0
+text = "THIS IS WHERE TEXT GOES"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -32,10 +58,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 824.0
-offset_top = 495.0
-offset_right = 949.0
-offset_bottom = 526.0
+offset_left = 51.0
+offset_top = 489.0
+offset_right = 176.0
+offset_bottom = 520.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "RESTART GAME"
@@ -47,13 +73,29 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 806.0
-offset_top = 341.0
-offset_right = 944.0
-offset_bottom = 372.0
+offset_left = 776.0
+offset_top = 132.0
+offset_right = 914.0
+offset_bottom = 163.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "SHUFFLE WORDS"
+
+[node name="SubmitButton" type="Button" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 760.0
+offset_top = 32.0
+offset_right = 932.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+text = "SUBMIT LOOP"
 
 [node name="ResetButton" type="Button" parent="."]
 unique_name_in_owner = true
@@ -62,10 +104,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 857.0
-offset_top = 245.0
-offset_right = 911.0
-offset_bottom = 276.0
+offset_left = 793.0
+offset_top = 95.0
+offset_right = 895.0
+offset_bottom = 126.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "RESET LOOP"

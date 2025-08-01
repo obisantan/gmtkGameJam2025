@@ -7,18 +7,30 @@ extends Node2D
 
 @onready var word_pool : WordPool = %WordPool
 @onready var loop_area : LoopArea = %LoopArea
-@onready var message_label = %MessageLabel
 @onready var line_container = %LineContainer
+
+@onready var message_label = %MessageLabel
+@onready var points_label = %PointsLabel
+@onready var curr_points_label = %CurrPointsLabel
 
 @onready var reset_button := %ResetButton
 @onready var restart_button := %RestartButton
 @onready var shuffle_button := %ShuffleButton
+@onready var submit_button := %SubmitButton
 
-var word_list = []
+var word_list: Array[String] = []
 var loop: Array[Word] = []
 var line_nodes: Array[Line2D] = []
-var loop_complete := false
-var pulse_time := 0.0
+var loop_complete: bool = false
+var pulse_time: float = 0.0
+
+var point_multipliers: Dictionary = {
+	3: 1.0, 4: 1.1, 5: 1.2, 6: 1.3, 7: 1.5, 8: 1.75, 9: 2.0, 10: 2.5, 11: 3.0, 12: 3.5, 13: 4.0, 14: 5.0, 15: 10.0
+}
+
+var total_points: int = 0
+var level_points: int = 0
+var current_loop_points: int = 0
 
 ## WORDPOOL GRID
 var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing
@@ -29,6 +41,8 @@ func _ready():
 	### TEST TODO
 	word_list = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
 	#word_list = DictionaryManager.get_level_words()
+	submit_button.visible = false
+	message_label.text = ""
 	register_events()
 	spawn_word_nodes()
 	clear_lines()
@@ -41,12 +55,17 @@ func register_events():
 	#Utils.event_button_pressed_restart.connect(on_restart_button)	
 	shuffle_button.button_up.connect(on_shuffle_button)
 	#Utils.event_button_pressed_shuffle.connect(on_shuffle_button)	
+	submit_button.button_up.connect(on_submit_button)
+	#Utils.event_button_pressed_submit.connect(on_submit_button)	
 
 func on_reset_button():
 	clear_lines()
 	for word_node in loop:
 		move_back_to_spawn(word_node)
 	loop = []
+	current_loop_points = 0
+	recalculate_loop_points()
+	submit_button.visible = false
 	message_label.text = "ℹ️ Loop Reset!"
 	print(loop)
 
@@ -70,8 +89,17 @@ func on_shuffle_button():
 		if word_node.get_parent() == word_pool:
 			word_node.move_to_pos(word_node.spawn_point)
 
+func on_submit_button():
+	# award points
+	level_points += current_loop_points
+	current_loop_points = 0
+	# TODO: if total points are higher than needed points for round, advance to next round
+	# TODO: if total points are less than needed points for round, reduce number of loops per round and start new round (filling up board, having current loop disappear)
+	# TODO: if total points are less and we are out of loops per round, give game over screen
+	recalculate_loop_points()
+
 ###################################################################################################
-## LOOP LOGIC																					 ##
+## LOOP LOGIC																					 	##
 ###################################################################################################
 
 func spawn_word_nodes():
@@ -149,6 +177,7 @@ func add_word_to_loop(word_node: Word):
 	check_loop_complete(word_node, true)
 	Utils.print_current_loop(loop)
 	redraw_lines()
+	recalculate_loop_points()
 
 func arrange_loop_words():
 	var radius_x = 130.0  # horizontal radius (wider)
@@ -173,17 +202,24 @@ func check_loop_complete(word_node: Word, was_added: bool):
 	if was_added:
 		if (loop.size() == 1):
 			message_label.text = "✅ Loop started with %s!" % word_node.word
+			submit_button.visible = false
 		# lets assume (for now), that you need 3 or more to make a loop --> potentially look at 2 word loop in the future
 		elif loop.size() >= 3 and loop[0].word[0] == loop[-1].word[-1]:
 			message_label.text = "🥳🥂🍾 Loop Complete! 🥳🥂🍾"
+			submit_button.visible = true
 		else:
 			message_label.text = "✅ '%s' added to Loop!" % word_node.word
+			submit_button.visible = false
 	else:
 		if loop.size() >= 3 and loop[0].word[0] == loop[-1].word[-1]:
 			message_label.text = "🥳🥂🍾 Loop Complete! 🥳🥂🍾"
+			submit_button.visible = true
 		elif loop.size() == 0:
 			message_label.text = "ℹ️ Loop Reset!"
+			submit_button.visible = false
 		else:
+			submit_button.visible = false
+
 			if word_node == loop[0]:
 				message_label.text = "✅ Removed %s, changed Loop start to %s!" % [word_node.word, loop[0].word]
 			else:
@@ -211,7 +247,8 @@ func remove_word_from_loop(word_node: Word):
 	check_loop_complete(word_node, false)
 	Utils.print_current_loop(loop)
 	redraw_lines()
-	
+	recalculate_loop_points()
+
 func move_back_to_spawn(word_node: Word) -> void:
 	var drop_pos = word_node.global_position  # keep visual position before reparent
 	word_node.get_parent().remove_child(word_node)
@@ -221,8 +258,28 @@ func move_back_to_spawn(word_node: Word) -> void:
 	word_node.scale_to(word_node.normal_scale)
 	word_node.move_to_pos(word_node.spawn_point)  # tween to global position of spawn_point
 
+
+
+func recalculate_loop_points() -> void:
+	if loop.size() < 3:
+		points_label.text = "Points: %d" % level_points
+		curr_points_label.text = "0 x 0"
+		return
+
+	var points = 0
+	var curr_mult = point_multipliers[loop.size()]
+
+	for word in loop:
+		points += word.points
+	
+	curr_points_label.text = "%s x %s" % [points, curr_mult]
+	
+	points *= curr_mult
+	current_loop_points = points
+
+
 ###################################################################################################
-## LINE STUFF																					 ##
+## LINE STUFF																					 	##
 ###################################################################################################
 
 func clear_lines():
