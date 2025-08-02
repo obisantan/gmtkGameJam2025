@@ -1,9 +1,12 @@
 ### GLOBAL PRELOAD - Utils
 extends Node
 
+############################
+var debugging: bool = true
+############################
+
 enum Location {POOL, LOOP}
 enum ButtonType {RESTART, SHUFFLE, RESET, SUBMIT}
-var debugging: bool = true
 
 ### points and loop number tracking
 var this_run_total_points: int = 0
@@ -22,8 +25,6 @@ var highscore_total_loops_submitted: int = 0
 var highscore_amount_of_wins: int = 0
 var highscore_fastest_level_played
 var highscore_fastest_win
-
-
 
 func print_current_loop(loop: Array[Word]):
 	print("=== CURRENT LOOP ===")

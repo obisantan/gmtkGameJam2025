@@ -12,6 +12,7 @@ region_enabled = true
 region_rect = Rect2(0, 5.5, 371.333, 213)
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Sprite"]
+unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

@@ -1,7 +1,7 @@
 class_name WordPool
 extends Node2D
 
-@onready var sprite = $Sprite
+@onready var sprite = %NinePatchRect
 
 var word_list_debug: Array[String] = ["apple", "elephant", "tiger", "rat", "tree", "egg", "grape", "emu", "umbrella", "ant"]
 
@@ -17,11 +17,11 @@ func _ready():
 	spawn_word_nodes(word_list)
 
 func _draw():
-	var region_size = sprite.region_rect.size * sprite.scale
+	var region_size = sprite.size * sprite.scale
 	#draw_rect(Rect2(-region_size / 2, region_size), Color.RED, false)
 
 func is_inside(global_point: Vector2) -> bool:
-	var region_size = sprite.region_rect.size * sprite.scale
+	var region_size = sprite.size * sprite.scale
 	# the *4 at the end makes it reach way outside the screen, making it possible to drop off words without hitting the area exactly
 	var bounds = Rect2(-region_size / 2, region_size * 4)
 	var local_pos = to_local(global_point)

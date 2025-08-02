@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://be6uj45ihvs4j"]
+[gd_scene load_steps=14 format=3 uid="uid://be6uj45ihvs4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hxnpu"]
 [ext_resource type="PackedScene" uid="uid://b682354tsfxxv" path="res://scenes/word_pool.tscn" id="2_kwxyf"]
@@ -11,6 +11,7 @@
 [ext_resource type="LabelSettings" uid="uid://cxcixxmf6x0u0" path="res://graphics/ui/label_settings_mult.tres" id="8_6kcac"]
 [ext_resource type="FontFile" uid="uid://bqax2r6y8djns" path="res://font/NGTVinaSans-Original.otf" id="9_u6yni"]
 [ext_resource type="PackedScene" uid="uid://bs57086gjw4iu" path="res://scenes/game_over_screen.tscn" id="11_b8uro"]
+[ext_resource type="PackedScene" uid="uid://b604v5wika3j5" path="res://scenes/you_won_screen.tscn" id="12_2g77k"]
 [ext_resource type="PackedScene" uid="uid://dnet3v7h6r031" path="res://scenes/button.tscn" id="12_a0jgd"]
 
 [node name="Main" type="Node2D"]
@@ -185,6 +186,10 @@ meta_underlined = false
 script = ExtResource("4_u7uni")
 
 [node name="GameOverScreen" parent="." instance=ExtResource("11_b8uro")]
+unique_name_in_owner = true
+visible = false
+
+[node name="YouWonScreen" parent="." instance=ExtResource("12_2g77k")]
 unique_name_in_owner = true
 visible = false
 

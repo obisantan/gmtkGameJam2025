@@ -16,6 +16,7 @@ extends Node2D
 @onready var loops_label = %LoopsLabel
 
 @onready var game_over_screen : GameOverScreen = %GameOverScreen
+@onready var you_won_screen : YouWonScreen = %YouWonScreen
 
 @onready var submit_button := %SubmitButton
 
@@ -42,7 +43,7 @@ var level_loop_amount: Dictionary = {
 ############### STUFF USED FOR DEBUG
 # could be modified in the future, for now its just the round number
 var debug_level_loop_amount: Dictionary = {
-	1: 1, 2: 1
+	1: 1
 }
 
 ### points and loop number tracking for ingame... global stats are saved in Utils
@@ -57,6 +58,7 @@ func _ready():
 	submit_button.visible = false
 	current_level = 1
 	game_over_screen.visible = false
+	you_won_screen.visible = false
 	loops_left_in_level = debug_level_loop_amount[current_level] if Utils.debugging else level_loop_amount[current_level]
 	message_label.visible = Utils.debugging
 	message_label.text = ""
@@ -112,8 +114,8 @@ func on_submit_button():
 	## you achieved more points than required this level
 	if (level_points >= level_point_goals[current_level]):
 		if (current_level == get_amount_of_levels()):
-			## TODO YOU BEAT THE GAME
-			pass
+			## you won the game
+			you_won_screen.visible = true
 		else:
 			## you move to the next level
 			current_level += 1
@@ -135,7 +137,9 @@ func on_submit_button():
 			var new_words = DictionaryManager.refill_word_pool(previously_used_words, get_words_currently_in_pool(), amount_of_words_in_submitted_loop)
 			word_pool.spawn_word_nodes(new_words, new_spawn_points)
 			print(new_words)
-	# in all cases, update points and UI
+
+	# this happens either way
+	submit_button.visible = false
 	update_ui()
 
 ###################################################################################################
@@ -356,7 +360,7 @@ func get_amount_of_levels() -> int:
 	return debug_level_loop_amount.size() if Utils.debugging else level_loop_amount.size()
 
 ###################################################################################################
-## LINE STUFF																					 	##
+## LINE STUFF																					 ##
 ###################################################################################################
 
 func clear_lines():
