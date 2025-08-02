@@ -7,9 +7,9 @@ var word_list_debug: Array[String] = ["apple", "elephant", "tiger", "rat", "tree
 
 ## WORDPOOL GRID
 var spawn_points: Array[Vector2] = [] # this holds all available spawn points in the word pool (only gets regenerated at level start)
-var grid_size = Vector2(135, 70)  # adjust based on sprite size + spacing
+var grid_size = Vector2(145, 70)  # adjust based on sprite size + spacing
 var cols = 5
-var start_pos = Vector2(-270, -70)
+var start_pos = Vector2(-290, -70)
 
 func _ready():
 	var word_list: Array[String] = word_list_debug if Utils.debugging else DictionaryManager.get_level_words()

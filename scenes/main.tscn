@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://be6uj45ihvs4j"]
+[gd_scene load_steps=13 format=3 uid="uid://be6uj45ihvs4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hxnpu"]
 [ext_resource type="PackedScene" uid="uid://b682354tsfxxv" path="res://scenes/word_pool.tscn" id="2_kwxyf"]
@@ -7,8 +7,11 @@
 [ext_resource type="Texture2D" uid="uid://b0ws8whmsky40" path="res://graphics/ui/rounded_panel.png" id="5_evi7c"]
 [ext_resource type="PackedScene" uid="uid://ddasgakxbsmt0" path="res://scenes/mute_button.tscn" id="5_moww0"]
 [ext_resource type="Texture2D" uid="uid://bpnsb6by47vpw" path="res://graphics/ui/title.png" id="6_2f6hi"]
-[ext_resource type="LabelSettings" uid="uid://be3dgkubpb7cx" path="res://graphics/words/label_settings_standard.tres" id="7_fnlts"]
-[ext_resource type="LabelSettings" uid="uid://cxcixxmf6x0u0" path="res://graphics/words/label_settings_mult.tres" id="8_6kcac"]
+[ext_resource type="LabelSettings" uid="uid://be3dgkubpb7cx" path="res://graphics/ui/label_settings_standard.tres" id="7_fnlts"]
+[ext_resource type="LabelSettings" uid="uid://cxcixxmf6x0u0" path="res://graphics/ui/label_settings_mult.tres" id="8_6kcac"]
+[ext_resource type="FontFile" uid="uid://bqax2r6y8djns" path="res://font/NGTVinaSans-Original.otf" id="9_u6yni"]
+[ext_resource type="PackedScene" uid="uid://bs57086gjw4iu" path="res://scenes/game_over_screen.tscn" id="11_b8uro"]
+[ext_resource type="PackedScene" uid="uid://dnet3v7h6r031" path="res://scenes/button.tscn" id="12_a0jgd"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_hxnpu")
@@ -16,117 +19,27 @@ script = ExtResource("1_hxnpu")
 [node name="WordPool" parent="." instance=ExtResource("2_kwxyf")]
 unique_name_in_owner = true
 z_index = -1
-position = Vector2(599, 411)
+position = Vector2(579, 413)
 
 [node name="LoopArea" parent="." instance=ExtResource("2_n0hmi")]
 unique_name_in_owner = true
 z_index = -1
-position = Vector2(541, 117)
+position = Vector2(667, 148)
 
 [node name="MessageLabel" type="Label" parent="."]
 unique_name_in_owner = true
-offset_left = 434.0
-offset_top = 246.0
-offset_right = 649.0
-offset_bottom = 269.0
+visible = false
+offset_left = 472.0
+offset_top = 493.0
+offset_right = 687.0
+offset_bottom = 516.0
 text = "THIS IS WHERE TEXT GOES"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="RestartButton" type="Button" parent="."]
-unique_name_in_owner = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 51.0
-offset_top = 489.0
-offset_right = 176.0
-offset_bottom = 520.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "RESTART GAME"
-metadata/_edit_use_anchors_ = true
-
-[node name="ShuffleButton" type="Button" parent="."]
-unique_name_in_owner = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 776.0
-offset_top = 132.0
-offset_right = 914.0
-offset_bottom = 163.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "SHUFFLE WORDS"
-metadata/_edit_use_anchors_ = true
-
-[node name="SubmitButton" type="Button" parent="."]
-unique_name_in_owner = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 760.0
-offset_top = 32.0
-offset_right = 932.0
-offset_bottom = 85.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 22
-text = "SUBMIT LOOP"
-metadata/_edit_use_anchors_ = true
-
-[node name="ResetButton" type="Button" parent="."]
-unique_name_in_owner = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 793.0
-offset_top = 95.0
-offset_right = 895.0
-offset_bottom = 126.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "RESET LOOP"
-metadata/_edit_use_anchors_ = true
-
 [node name="LineContainer" type="Node2D" parent="."]
 unique_name_in_owner = true
-
-[node name="Credits" type="RichTextLabel" parent="."]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 14.0
-offset_top = 265.0
-offset_right = 514.0
-offset_bottom = 565.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-bbcode_enabled = true
-text = "[b]Music:[/b]
-[url=incompetech.com]\"Late Night Radio\" Kevin MacLeod[/url]
-[url=http://creativecommons.org/licenses/by/4.0/]Licensed under Creative Commons: By Attribution 4.0 License[/url]
-
-[b]Font:[/b]
-[url=https://github.com/nguyentype/vinasans]Copyright 2023 The Vina Sans Project Authors[/url]
-[url=http://scripts.sil.org/OFL]Licensed under SIL OFL 1.1[/url]
-
-[b]Mute Button Icons:[/b]
-[url=https://creativecommons.org/licenses/by/3.0/]Delapouite under CC BY 3.0[/url]"
-script = ExtResource("4_u7uni")
 
 [node name="UI" type="NinePatchRect" parent="."]
 anchors_preset = 8
@@ -134,10 +47,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 45.0
-offset_top = 32.0
-offset_right = 301.0
-offset_bottom = 281.0
+offset_left = 13.0
+offset_top = 16.0
+offset_right = 327.0
+offset_bottom = 265.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -182,10 +95,18 @@ metadata/_edit_use_anchors_ = true
 
 [node name="PointsLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_top = 39.0
-offset_right = 256.0
-offset_bottom = 91.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -79.0
+offset_top = -86.5
+offset_right = 79.0
+offset_bottom = -34.5
+grow_horizontal = 2
+grow_vertical = 2
 text = "0 / X Points"
 label_settings = ExtResource("7_fnlts")
 horizontal_alignment = 1
@@ -193,10 +114,18 @@ vertical_alignment = 1
 
 [node name="LoopsLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_top = 79.0
-offset_right = 256.0
-offset_bottom = 131.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -46.5
+offset_right = 72.0
+offset_bottom = 5.5
+grow_horizontal = 2
+grow_vertical = 2
 text = "0 / X Loops"
 label_settings = ExtResource("7_fnlts")
 horizontal_alignment = 1
@@ -219,7 +148,69 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="MuteButton" parent="." instance=ExtResource("5_moww0")]
-offset_left = 196.0
-offset_top = 488.0
-offset_right = 228.0
-offset_bottom = 520.0
+offset_left = 90.0
+offset_top = 498.0
+offset_right = 122.0
+offset_bottom = 530.0
+
+[node name="Credits" type="RichTextLabel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = 266.0
+offset_right = 369.0
+offset_bottom = 506.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_fonts/normal_font = ExtResource("9_u6yni")
+theme_override_fonts/bold_font = ExtResource("9_u6yni")
+theme_override_font_sizes/normal_font_size = 20
+theme_override_font_sizes/bold_font_size = 20
+bbcode_enabled = true
+text = "[b]UI Assets:[/b]
+[url=https://prinbles.itch.io/solid]Solid by Prinbles[/url]
+
+[b]Music:[/b]
+[url=incompetech.com]\"Late Night Radio\" Kevin MacLeod[/url]
+[url=http://creativecommons.org/licenses/by/4.0/]Licensed under Creative Commons: By Attribution 4.0 License[/url]
+
+[b]Font:[/b]
+[url=https://github.com/nguyentype/vinasans]Copyright 2023 The Vina Sans Project Authors[/url]
+[url=http://scripts.sil.org/OFL]Licensed under SIL OFL 1.1[/url]"
+meta_underlined = false
+script = ExtResource("4_u7uni")
+
+[node name="GameOverScreen" parent="." instance=ExtResource("11_b8uro")]
+unique_name_in_owner = true
+visible = false
+
+[node name="ResetButton" parent="." instance=ExtResource("12_a0jgd")]
+offset_left = 31.0001
+offset_top = 384.0
+offset_right = 211.0
+offset_bottom = 448.0
+scale = Vector2(0.8, 0.8)
+button_type = 2
+text = "Reset Loop"
+
+[node name="ShuffleButton" parent="." instance=ExtResource("12_a0jgd")]
+offset_left = 31.0001
+offset_top = 439.0
+offset_right = 211.0
+offset_bottom = 503.0
+scale = Vector2(0.8, 0.8)
+button_type = 1
+text = "shuffle words"
+
+[node name="SubmitButton" parent="." instance=ExtResource("12_a0jgd")]
+unique_name_in_owner = true
+offset_left = 13.0
+offset_top = 313.0
+offset_right = 193.0
+offset_bottom = 377.0
+button_type = 3
+text = "submit loop"

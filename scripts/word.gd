@@ -7,9 +7,9 @@ static var z_max := 10
 @onready var label = %Label
 @onready var sprite = %Sprite
 
-const MAX_WIDTH = 48 # Or whatever width your sprite allows
-const MIN_FONT_SIZE = 120 # Avoid fonts getting too tiny
-const MAX_FONT_SIZE = 180 # Starting point for big text
+const MAX_WIDTH = 140 # Or whatever width your sprite allows
+const MIN_FONT_SIZE = 30 # Avoid fonts getting too tiny
+const MAX_FONT_SIZE = 35 # Starting point for big text
 
 ## currently not in use
 var next : Word = null
@@ -20,7 +20,7 @@ var points: int = 10
 
 ## scaling stuff
 var normal_scale := Vector2.ONE
-var loop_scale := Vector2(0.7, 0.7)  # adjust this to what looks good
+var loop_scale := Vector2(0.6, 0.6)  # adjust this to what looks good
 var tween: Tween = null
 
 ## location, movement and animation stuff
@@ -111,18 +111,20 @@ func scale_to(target_scale: Vector2, duration: float = 0.2):
 	tween.tween_property(self, "scale", target_scale, duration)
 
 func _is_mouse_over() -> bool:
-	var region_size = sprite.region_rect.size * sprite.scale
+	var region_size = sprite.size * sprite.scale
 	var bounds = Rect2(-region_size / 2, region_size)
 	var mouse_pos = to_local(get_viewport().get_mouse_position())
 	return bounds.has_point(mouse_pos)
 
 func fit_text_to_width():
-	var font: Font = label.get_theme_font("font")
+	var font: Font = label.get_label_settings().get_font()
 	var best_size := MIN_FONT_SIZE
 
 	for size in range(MAX_FONT_SIZE, MIN_FONT_SIZE - 1, -1):
 		var width := font.get_string_size(word, HORIZONTAL_ALIGNMENT_LEFT, size).x
+		#label.label_settings.font_size = size
 		if width <= MAX_WIDTH:
+		#if label.size.x <= MAX_WIDTH:
 			best_size = size
 			break
 

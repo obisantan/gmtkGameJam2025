@@ -15,9 +15,8 @@ extends Node2D
 @onready var level_label = %LevelLabel
 @onready var loops_label = %LoopsLabel
 
-@onready var reset_button := %ResetButton
-@onready var restart_button := %RestartButton
-@onready var shuffle_button := %ShuffleButton
+@onready var game_over_screen : GameOverScreen = %GameOverScreen
+
 @onready var submit_button := %SubmitButton
 
 ## TRACKING WORDS AND LOOPS
@@ -27,7 +26,8 @@ var line_nodes: Array[Line2D] = []
 var loop_complete: bool = false
 var pulse_time: float = 0.0
 
-## POINTS AND LEVEL LOGIC
+## LEVEL LOGIC
+## TODO: make all of this a json thingy, where its one dictionary
 var point_multipliers: Dictionary = {
 	3: 1.0, 4: 1.0, 5: 1.2, 6: 1.3, 7: 1.5, 8: 2.0, 9: 2.0, 10: 2.5, 11: 3.0, 12: 3.5, 13: 4.0, 14: 5.0, 15: 10.0
 }
@@ -36,10 +36,16 @@ var level_point_goals: Dictionary = {
 }
 # could be modified in the future, for now its just the round number
 var level_loop_amount: Dictionary = {
-	1: 2, 2: 3, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10
+	1: 3, 2: 3, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10
 }
 
-var total_points: int = 0
+############### STUFF USED FOR DEBUG
+# could be modified in the future, for now its just the round number
+var debug_level_loop_amount: Dictionary = {
+	1: 1, 2: 1
+}
+
+### points and loop number tracking for ingame... global stats are saved in Utils
 var level_points: int = 0
 var current_loop_points: int = 0
 var current_level: int = 1
@@ -50,22 +56,29 @@ func _ready():
 	### TEST TODO
 	submit_button.visible = false
 	current_level = 1
-	loops_left_in_level = level_loop_amount[current_level]
+	game_over_screen.visible = false
+	loops_left_in_level = debug_level_loop_amount[current_level] if Utils.debugging else level_loop_amount[current_level]
+	message_label.visible = Utils.debugging
 	message_label.text = ""
-	calculate_points_and_update_ui()
+	if !Utils.debugging: message_label.visible = false
+	update_ui()
 	register_events()
 	clear_lines()
 
 func register_events():
-	# currently there is not a reason for global events yet...
-	reset_button.button_up.connect(on_reset_button)
-	#Utils.event_button_pressed_reset.connect(on_reset_button)
-	restart_button.button_up.connect(on_restart_button)
-	#Utils.event_button_pressed_restart.connect(on_restart_button)	
-	shuffle_button.button_up.connect(on_shuffle_button)
-	#Utils.event_button_pressed_shuffle.connect(on_shuffle_button)	
-	submit_button.button_up.connect(on_submit_button)
-	#Utils.event_button_pressed_submit.connect(on_submit_button)	
+	for button in get_tree().get_nodes_in_group("buttons"):
+		button.connect("custom_button_pressed", Callable(self, "handle_custom_buttons"))
+
+func handle_custom_buttons(button_type: Utils.ButtonType):
+	match button_type:
+		Utils.ButtonType.RESTART:
+			on_restart_button()
+		Utils.ButtonType.SHUFFLE:
+			on_shuffle_button()
+		Utils.ButtonType.RESET:
+			on_reset_button()
+		Utils.ButtonType.SUBMIT:
+			on_submit_button()
 
 func on_reset_button():
 	clear_lines()
@@ -73,7 +86,7 @@ func on_reset_button():
 		move_back_to_spawn(word_node)
 	loop = []
 	current_loop_points = 0
-	calculate_points_and_update_ui()
+	update_ui()
 	submit_button.visible = false
 	message_label.text = "ℹ️ Loop Reset!"
 	print(loop)
@@ -86,29 +99,44 @@ func on_shuffle_button():
 
 func on_submit_button():
 	# before removing loop, we need to check how many words need to be replaced in the word pool, and where they spawned
-	var amount_of_words_needed = loop.size()
+	var amount_of_words_in_submitted_loop = loop.size()
 	var new_spawn_points: Array[Vector2]
 	for word_node in loop:
 		new_spawn_points.append(word_node.spawn_point)
 	
-	# award points
+	# award points and keep track of score
 	level_points += current_loop_points
+	update_global_scores()
 	remove_loop()
 
+	## you achieved more points than required this level
 	if (level_points >= level_point_goals[current_level]):
-		# TODO: if total points are higher than needed points for round, advance to next round
-		current_level += 1
+		if (current_level == get_amount_of_levels()):
+			## TODO YOU BEAT THE GAME
+			pass
+		else:
+			## you move to the next level
+			current_level += 1
+			loops_left_in_level = level_loop_amount[current_level]
+			loops_submitted_in_level = 0
+			level_points = 0
+			var new_words = DictionaryManager.refill_word_pool(previously_used_words, get_words_currently_in_pool(), amount_of_words_in_submitted_loop)
+			word_pool.spawn_word_nodes(new_words, new_spawn_points)
+
 	else:
+		## you did not achieve enough points to beat the level
 		loops_left_in_level -= 1
 		loops_submitted_in_level += 1
 		if (loops_left_in_level == 0):
-			# TODO: game over screen (we do not execute rest of this function probably?)
-			return
+			## you are out of loops, game over
+			game_over_screen.visible = true
 		else:
-			# if total points are less than needed points for round, reduce number of loops per round and start new round
-			var new_words = DictionaryManager.refill_word_pool(previously_used_words, get_words_currently_in_pool(), amount_of_words_needed)
+			# you keep going in this level, refill board
+			var new_words = DictionaryManager.refill_word_pool(previously_used_words, get_words_currently_in_pool(), amount_of_words_in_submitted_loop)
 			word_pool.spawn_word_nodes(new_words, new_spawn_points)
 			print(new_words)
+	# in all cases, update points and UI
+	update_ui()
 
 ###################################################################################################
 ## LOOP LOGIC																					 	##
@@ -180,7 +208,7 @@ func add_word_to_loop(word_node: Word):
 	check_loop_complete(word_node, true)
 	#Utils.print_current_loop(loop)
 	redraw_lines()
-	calculate_points_and_update_ui()
+	update_ui()
 
 func arrange_loop_words():
 	var radius_x = 130.0  # horizontal radius (ellipse width)
@@ -267,7 +295,7 @@ func remove_word_from_loop(word_node: Word):
 	check_loop_complete(word_node, false)
 	#Utils.print_current_loop(loop)
 	redraw_lines()
-	calculate_points_and_update_ui()
+	update_ui()
 
 func move_back_to_spawn(word_node: Word) -> void:
 	var drop_pos = word_node.global_position  # keep visual position before reparent
@@ -279,9 +307,9 @@ func move_back_to_spawn(word_node: Word) -> void:
 	word_node.rotation = 0
 	word_node.move_to_pos(word_node.spawn_point)  # tween to global position of spawn_point
 
-func calculate_points_and_update_ui() -> void:
+func update_ui() -> void:
 	if loop.size() < 3:
-		loops_label.text = "%s / %s Loops" % [loops_submitted_in_level, level_loop_amount[current_level]]
+		loops_label.text = "%s / %s Loops" % [loops_submitted_in_level, loops_left_in_level]
 		level_label.text = "Level %s" % current_level
 		points_label.text = "%s / %s Points" % [level_points, level_point_goals[current_level]]
 		curr_points_label.text = "- x -"
@@ -298,6 +326,13 @@ func calculate_points_and_update_ui() -> void:
 	points *= curr_mult
 	current_loop_points = points
 
+func update_global_scores() -> void:
+	Utils.this_run_total_points += current_loop_points
+	Utils.this_run_total_loops_submitted += 1
+	if (current_loop_points > Utils.this_run_best_loop_score): Utils.this_run_best_loop_score = current_loop_points
+	if (loop.size() > Utils.this_run_best_loop_word_amount): Utils.this_run_best_loop_word_amount = loop.size()
+	if (current_level > Utils.this_run_highest_level_reached): Utils.this_run_highest_level_reached = current_level
+
 func remove_loop():
 	for word_node in loop:
 		previously_used_words.append(word_node.word)
@@ -308,7 +343,7 @@ func remove_loop():
 	loop.clear()
 	current_loop_points = 0
 	clear_lines()
-	calculate_points_and_update_ui()
+	update_ui()
 
 func get_words_currently_in_pool() -> Array[String]:
 	var result: Array[String] = []
@@ -316,6 +351,9 @@ func get_words_currently_in_pool() -> Array[String]:
 		if word_node.is_in_group("words"):
 			result.append(word_node.word)
 	return result
+
+func get_amount_of_levels() -> int:
+	return debug_level_loop_amount.size() if Utils.debugging else level_loop_amount.size()
 
 ###################################################################################################
 ## LINE STUFF																					 	##

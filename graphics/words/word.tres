@@ -1,0 +1,16 @@
+[gd_resource type="LabelSettings" load_steps=3 format=3 uid="uid://by6g1sddwpw2l"]
+
+[ext_resource type="FontFile" uid="uid://bqax2r6y8djns" path="res://font/NGTVinaSans-Original.otf" id="1_3r2if"]
+
+[sub_resource type="FontVariation" id="FontVariation_5vn52"]
+resource_local_to_scene = true
+base_font = ExtResource("1_3r2if")
+baseline_offset = -0.1
+
+[resource]
+resource_local_to_scene = true
+font = SubResource("FontVariation_5vn52")
+font_size = 35
+outline_color = Color(0, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(2, 2)
