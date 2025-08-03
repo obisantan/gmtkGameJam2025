@@ -23,6 +23,7 @@ color = Color(0, 0, 0, 0.572549)
 
 [node name="MainMenuUI" type="NinePatchRect" parent="."]
 unique_name_in_owner = true
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -184,7 +185,6 @@ text = "Back"
 
 [node name="CreditsUI" type="NinePatchRect" parent="."]
 unique_name_in_owner = true
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -239,12 +239,12 @@ theme = ExtResource("6_l57qt")
 theme_override_constants/line_separation = -8
 theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
-text = "[center][font_size=32]made by [color=#029ae0]O.b. Studios[/color][/font_size]
+text = "[center][font_size=32]made by [color=#029ae0]ob Studios[/color][/font_size]
 for the gmtk game jam 2025
 
 
 [font_size=32][b][color=#029ae0]Music[/color][/b]
-[url=incompetech.com]\"Late Night Radio\" Kevin MacLeod[/url][/font_size]
+[url=http://incompetech.com]\"Late Night Radio\" Kevin MacLeod[/url][/font_size]
 [url=http://creativecommons.org/licenses/by/4.0/]Licensed under Creative Commons: By Attribution 4.0 License[/url]
 
 
