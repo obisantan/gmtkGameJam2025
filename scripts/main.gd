@@ -334,7 +334,7 @@ func move_back_to_spawn(word_node: Word) -> void:
 
 func update_ui() -> void:
 	if loop.size() < 3:
-		loops_label.text = "%s / %s Loops" % [loops_submitted_in_level, loops_left_in_level]
+		loops_label.text = "%s / %s Loops" % [loops_submitted_in_level, debug_level_loop_amount[current_level] if Utils.debugging else level_loop_amount[current_level]]
 		level_label.text = "Level %s" % current_level
 		points_label.text = "%s / %s Points" % [level_points, level_point_goals[current_level]]
 		curr_points_label.text = "- x -"

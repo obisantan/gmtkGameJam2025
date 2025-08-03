@@ -23,6 +23,7 @@ grow_vertical = 2
 script = ExtResource("1_mcil3")
 
 [node name="SpriteRed" type="NinePatchRect" parent="."]
+visible = false
 custom_minimum_size = Vector2(180, 64)
 layout_mode = 1
 anchors_preset = 15
@@ -41,6 +42,7 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [node name="SpriteGreen" type="NinePatchRect" parent="."]
+visible = false
 custom_minimum_size = Vector2(180, 64)
 layout_mode = 1
 anchors_preset = 15

@@ -13,6 +13,7 @@ config_version=5
 config/name="Lingo Loop"
 run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+config/icon="res://export/web/itch_stuff/itch_cover_image.png"
 
 [audio]
 
