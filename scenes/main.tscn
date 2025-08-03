@@ -1,15 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://be6uj45ihvs4j"]
+[gd_scene load_steps=13 format=3 uid="uid://be6uj45ihvs4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hxnpu"]
 [ext_resource type="PackedScene" uid="uid://b682354tsfxxv" path="res://scenes/word_pool.tscn" id="2_kwxyf"]
 [ext_resource type="PackedScene" uid="uid://dmm1dv8luwsh0" path="res://scenes/loop_area.tscn" id="2_n0hmi"]
-[ext_resource type="Script" path="res://scripts/credits.gd" id="4_u7uni"]
 [ext_resource type="Texture2D" uid="uid://b0ws8whmsky40" path="res://graphics/ui/rounded_panel.png" id="5_evi7c"]
 [ext_resource type="PackedScene" uid="uid://ddasgakxbsmt0" path="res://scenes/mute_button.tscn" id="5_moww0"]
 [ext_resource type="Texture2D" uid="uid://bpnsb6by47vpw" path="res://graphics/ui/title.png" id="6_2f6hi"]
-[ext_resource type="LabelSettings" uid="uid://be3dgkubpb7cx" path="res://graphics/ui/label_settings_standard.tres" id="7_fnlts"]
+[ext_resource type="LabelSettings" uid="uid://c2t17qgpk0g7f" path="res://graphics/ui/text_settings_standard.tres" id="6_uf63w"]
 [ext_resource type="LabelSettings" uid="uid://cxcixxmf6x0u0" path="res://graphics/ui/label_settings_mult.tres" id="8_6kcac"]
-[ext_resource type="FontFile" uid="uid://bqax2r6y8djns" path="res://font/NGTVinaSans-Original.otf" id="9_u6yni"]
+[ext_resource type="PackedScene" uid="uid://du1tm1sdj7ocd" path="res://scenes/are_you_sure_screen.tscn" id="11_ajce2"]
 [ext_resource type="PackedScene" uid="uid://bs57086gjw4iu" path="res://scenes/game_over_screen.tscn" id="11_b8uro"]
 [ext_resource type="PackedScene" uid="uid://b604v5wika3j5" path="res://scenes/you_won_screen.tscn" id="12_2g77k"]
 [ext_resource type="PackedScene" uid="uid://dnet3v7h6r031" path="res://scenes/button.tscn" id="12_a0jgd"]
@@ -89,7 +88,7 @@ anchor_right = 1.0
 offset_bottom = 52.0
 grow_horizontal = 2
 text = "Level X"
-label_settings = ExtResource("7_fnlts")
+label_settings = ExtResource("6_uf63w")
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
@@ -109,7 +108,7 @@ offset_bottom = -34.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "0 / X Points"
-label_settings = ExtResource("7_fnlts")
+label_settings = ExtResource("6_uf63w")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -128,7 +127,7 @@ offset_bottom = 5.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "0 / X Loops"
-label_settings = ExtResource("7_fnlts")
+label_settings = ExtResource("6_uf63w")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -149,41 +148,10 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="MuteButton" parent="." instance=ExtResource("5_moww0")]
-offset_left = 90.0
-offset_top = 498.0
-offset_right = 122.0
-offset_bottom = 530.0
-
-[node name="Credits" type="RichTextLabel" parent="."]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 14.0
-offset_top = 266.0
-offset_right = 369.0
-offset_bottom = 506.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_fonts/normal_font = ExtResource("9_u6yni")
-theme_override_fonts/bold_font = ExtResource("9_u6yni")
-theme_override_font_sizes/normal_font_size = 20
-theme_override_font_sizes/bold_font_size = 20
-bbcode_enabled = true
-text = "[b]UI Assets:[/b]
-[url=https://prinbles.itch.io/solid]Solid by Prinbles[/url]
-
-[b]Music:[/b]
-[url=incompetech.com]\"Late Night Radio\" Kevin MacLeod[/url]
-[url=http://creativecommons.org/licenses/by/4.0/]Licensed under Creative Commons: By Attribution 4.0 License[/url]
-
-[b]Font:[/b]
-[url=https://github.com/nguyentype/vinasans]Copyright 2023 The Vina Sans Project Authors[/url]
-[url=http://scripts.sil.org/OFL]Licensed under SIL OFL 1.1[/url]"
-meta_underlined = false
-script = ExtResource("4_u7uni")
+offset_left = 16.0
+offset_top = 492.0
+offset_right = 48.0
+offset_bottom = 524.0
 
 [node name="GameOverScreen" parent="." instance=ExtResource("11_b8uro")]
 unique_name_in_owner = true
@@ -193,20 +161,33 @@ visible = false
 unique_name_in_owner = true
 visible = false
 
+[node name="AreYouSureScreen" parent="." instance=ExtResource("11_ajce2")]
+unique_name_in_owner = true
+visible = false
+
 [node name="ResetButton" parent="." instance=ExtResource("12_a0jgd")]
 offset_left = 31.0001
-offset_top = 384.0
+offset_top = 360.0
 offset_right = 211.0
-offset_bottom = 448.0
+offset_bottom = 424.0
 scale = Vector2(0.8, 0.8)
 button_type = 2
 text = "Reset Loop"
 
+[node name="MainMenuButton" parent="." instance=ExtResource("12_a0jgd")]
+offset_left = 63.0
+offset_top = 486.0
+offset_right = 243.0
+offset_bottom = 550.0
+scale = Vector2(0.7, 0.7)
+button_type = 5
+text = "Main Menu"
+
 [node name="ShuffleButton" parent="." instance=ExtResource("12_a0jgd")]
 offset_left = 31.0001
-offset_top = 439.0
+offset_top = 415.0
 offset_right = 211.0
-offset_bottom = 503.0
+offset_bottom = 479.0
 scale = Vector2(0.8, 0.8)
 button_type = 1
 text = "shuffle words"
@@ -214,8 +195,8 @@ text = "shuffle words"
 [node name="SubmitButton" parent="." instance=ExtResource("12_a0jgd")]
 unique_name_in_owner = true
 offset_left = 13.0
-offset_top = 313.0
+offset_top = 279.0
 offset_right = 193.0
-offset_bottom = 377.0
+offset_bottom = 343.0
 button_type = 3
 text = "submit loop"

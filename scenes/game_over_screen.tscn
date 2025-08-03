@@ -114,8 +114,25 @@ vertical_alignment = 1
 [node name="RestartButton" parent="UI" instance=ExtResource("5_np2u5")]
 unique_name_in_owner = true
 layout_mode = 1
-offset_left = -90.0
-offset_top = 98.0
-offset_right = 90.0
-offset_bottom = 162.0
+anchors_preset = 7
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -186.0
+offset_top = -106.0
+offset_right = -6.0
+offset_bottom = -42.0
+grow_vertical = 0
 text = "Restart Game"
+
+[node name="MainMenuButton" parent="UI" instance=ExtResource("5_np2u5")]
+layout_mode = 1
+anchors_preset = 7
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -106.0
+offset_right = 186.0
+offset_bottom = -42.0
+grow_vertical = 0
+button_type = 4
+text = "Main Menu"

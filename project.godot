@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="GMTK Game Jam 2025"
-run/main_scene="res://scenes/main.tscn"
+config/name="Lingo Loop"
+run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [audio]

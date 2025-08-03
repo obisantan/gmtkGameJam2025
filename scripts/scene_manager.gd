@@ -5,12 +5,14 @@ var transition_time: float = 0.5
 
 var music_player: AudioStreamPlayer
 var default_volume
+
 @onready var master_bus = AudioServer.get_bus_index("Master")
 @onready var music_bus = AudioServer.get_bus_index("Music")
 @onready var sfx_bus = AudioServer.get_bus_index("SFX")
 @onready var music := preload("res://audio/Late Night Radio.mp3")
 
 func _ready():
+	AudioServer.set_bus_layout(load("res://audio/default_bus_layout.tres"))
 	play_music(music)
 
 ## will use this for main menu i guess? could be useful in the future

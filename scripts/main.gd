@@ -17,6 +17,7 @@ extends Node2D
 
 @onready var game_over_screen : GameOverScreen = %GameOverScreen
 @onready var you_won_screen : YouWonScreen = %YouWonScreen
+@onready var are_you_sure_screen := %AreYouSureScreen
 
 @onready var submit_button := %SubmitButton
 
@@ -59,6 +60,7 @@ func _ready():
 	current_level = 1
 	game_over_screen.visible = false
 	you_won_screen.visible = false
+	are_you_sure_screen.visible = false
 	loops_left_in_level = debug_level_loop_amount[current_level] if Utils.debugging else level_loop_amount[current_level]
 	message_label.visible = Utils.debugging
 	message_label.text = ""
@@ -81,6 +83,12 @@ func handle_custom_buttons(button_type: Utils.ButtonType):
 			on_reset_button()
 		Utils.ButtonType.SUBMIT:
 			on_submit_button()
+		Utils.ButtonType.ARE_YOU_SURE:
+			on_are_you_sure_button()
+		Utils.ButtonType.MAIN_MENU:
+			on_main_menu_button()
+		Utils.ButtonType.BACK:
+			on_back_button()
 
 func on_reset_button():
 	clear_lines()
@@ -95,6 +103,19 @@ func on_reset_button():
 
 func on_restart_button():
 	get_tree().reload_current_scene()
+
+func on_are_you_sure_button():
+	are_you_sure_screen.visible = true
+
+func on_back_button():
+	are_you_sure_screen.visible = false
+
+func on_main_menu_button():
+	# TODO: save state and add continue button
+	game_over_screen.visible = false
+	you_won_screen.visible = false
+	are_you_sure_screen.visible = false
+	SceneManager.change_scene_with_transition("res://scenes/main_menu.tscn")
 
 func on_shuffle_button():
 	word_pool.shuffle_words()
