@@ -31,14 +31,14 @@ var pulse_time: float = 0.0
 ## LEVEL LOGIC
 ## TODO: make all of this a json thingy, where its one dictionary
 var point_multipliers: Dictionary = {
-	3: 1.0, 4: 1.0, 5: 1.2, 6: 1.3, 7: 1.5, 8: 2.0, 9: 2.0, 10: 2.5, 11: 3.0, 12: 3.5, 13: 4.0, 14: 5.0, 15: 10.0
+	3: 1.0, 4: 1.0, 5: 1.5, 6: 1.5, 7: 2, 8: 3, 9: 4, 10: 5, 11: 10, 12: 15, 13: 20, 14: 50, 15: 100
 }
 var level_point_goals: Dictionary = {
-	1: 100, 2: 200, 3: 300, 4: 500, 5: 1000, 6: 1200, 7: 1300, 8: 1400, 9: 1500, 10: 2000
+	1: 50, 2: 75, 3: 100, 4: 200, 5: 300, 6: 400, 7: 500, 8: 750, 9: 1000, 10: 1500
 }
 # could be modified in the future, for now its just the round number
 var level_loop_amount: Dictionary = {
-	1: 3, 2: 3, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10
+	1: 5, 2: 5, 3: 5, 4: 5, 5: 5, 6: 5, 7: 5, 8: 5, 9: 5, 10: 5
 }
 
 ############### STUFF USED FOR DEBUG
@@ -236,7 +236,7 @@ func add_word_to_loop(word_node: Word):
 	update_ui()
 
 func arrange_loop_words():
-	var radius_x = 130.0  # horizontal radius (ellipse width)
+	var radius_x = 180.0  # horizontal radius (ellipse width)
 	var radius_y = 85.0   # vertical radius (ellipse height)
 	var center = loop_area.global_position
 	var count = loop.size()
@@ -405,8 +405,9 @@ func redraw_lines():
 		var end_word = loop[i + 1]
 		if start_word.word[-1] == end_word.word[0]:
 			var line = Line2D.new()
-			line.default_color = Color(0.2, 0.8, 0.2) if loop_complete else Color(0.8, 0.2, 0.1)
-			line.width = 5.0
+			line.antialiased = true
+			line.default_color = Color(0.122, 0.643, 0.004, 1.0) if loop_complete else Color(0.878, 0.282, 0.008, 1.0)
+			line.width = 10.0
 			line.points = [
 				line_container.to_local(start_word.global_position),
 				line_container.to_local(end_word.global_position)
@@ -419,8 +420,9 @@ func redraw_lines():
 		var first = loop[0]
 		var last = loop[-1]
 		var final_line = Line2D.new()
-		final_line.default_color = Color(0.2, 0.8, 0.2)
-		final_line.width = 8.0
+		final_line.antialiased = true
+		final_line.default_color = Color(0.122, 0.643, 0.004, 1.0)
+		final_line.width = 10
 		final_line.points = [
 			line_container.to_local(last.global_position),
 			line_container.to_local(first.global_position)
@@ -445,7 +447,7 @@ func update_lines(delta):
 
 			if loop_complete:
 				pulse_time += delta * 4.0
-				line.width = 3.0 + sin(pulse_time) * 1.5
+				line.width = 10 + sin(pulse_time) * 3
 			index += 1
 
 	if loop_complete and index < line_nodes.size():
@@ -456,4 +458,4 @@ func update_lines(delta):
 			line_container.to_local(last.global_position),
 			line_container.to_local(first.global_position)
 		]
-		final_line.width = 3.0 + sin(pulse_time) * 1.5
+		final_line.width = 10.0 + sin(pulse_time) * 3

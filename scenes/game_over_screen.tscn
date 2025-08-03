@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bs57086gjw4iu"]
+[gd_scene load_steps=7 format=3 uid="uid://bs57086gjw4iu"]
 
 [ext_resource type="Script" path="res://scripts/game_over_screen.gd" id="1_1be6d"]
 [ext_resource type="Texture2D" uid="uid://b0ws8whmsky40" path="res://graphics/ui/rounded_panel.png" id="1_xpeef"]
 [ext_resource type="Texture2D" uid="uid://bpnsb6by47vpw" path="res://graphics/ui/title.png" id="2_045h6"]
 [ext_resource type="LabelSettings" uid="uid://be3dgkubpb7cx" path="res://graphics/ui/label_settings_standard.tres" id="3_yj7q7"]
+[ext_resource type="LabelSettings" uid="uid://c2t17qgpk0g7f" path="res://graphics/ui/text_settings_standard.tres" id="5_dnt0v"]
 [ext_resource type="PackedScene" uid="uid://dnet3v7h6r031" path="res://scenes/button.tscn" id="5_np2u5"]
 
 [node name="GameOverScreen" type="CanvasLayer"]
@@ -70,9 +71,9 @@ metadata/_edit_use_anchors_ = true
 [node name="FinalScoreLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 65.0
+offset_top = 72.0
 offset_right = 489.0
-offset_bottom = 117.0
+offset_bottom = 124.0
 text = "Final Score: x"
 label_settings = ExtResource("3_yj7q7")
 horizontal_alignment = 1
@@ -81,33 +82,33 @@ vertical_alignment = 1
 [node name="BestLoopLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 232.0
+offset_top = 221.0
 offset_right = 489.0
-offset_bottom = 284.0
-text = "Best Loop: x words x points"
-label_settings = ExtResource("3_yj7q7")
+offset_bottom = 273.0
+text = "Best Loop: x words, x points"
+label_settings = ExtResource("5_dnt0v")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HighestLevelLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_top = 133.0
+offset_top = 120.0
 offset_right = 489.0
-offset_bottom = 185.0
+offset_bottom = 172.0
 text = "You made it to level x"
-label_settings = ExtResource("3_yj7q7")
+label_settings = ExtResource("5_dnt0v")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TotalLoopsLabel" type="Label" parent="UI"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_top = 173.0
+offset_top = 150.0
 offset_right = 489.0
-offset_bottom = 225.0
+offset_bottom = 202.0
 text = "and submitted x loops"
-label_settings = ExtResource("3_yj7q7")
+label_settings = ExtResource("5_dnt0v")
 horizontal_alignment = 1
 vertical_alignment = 1
 

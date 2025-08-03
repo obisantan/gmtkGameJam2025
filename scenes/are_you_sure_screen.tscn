@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://du1tm1sdj7ocd"]
+[gd_scene load_steps=5 format=3 uid="uid://du1tm1sdj7ocd"]
 
 [ext_resource type="Texture2D" uid="uid://b0ws8whmsky40" path="res://graphics/ui/rounded_panel.png" id="2_r0xcb"]
 [ext_resource type="Texture2D" uid="uid://bpnsb6by47vpw" path="res://graphics/ui/title.png" id="3_ibdmj"]
 [ext_resource type="LabelSettings" uid="uid://be3dgkubpb7cx" path="res://graphics/ui/label_settings_standard.tres" id="4_w77f1"]
 [ext_resource type="PackedScene" uid="uid://dnet3v7h6r031" path="res://scenes/button.tscn" id="5_i2s0d"]
-[ext_resource type="LabelSettings" uid="uid://c2t17qgpk0g7f" path="res://graphics/ui/text_settings_standard.tres" id="5_t6o1b"]
 
 [node name="AreYouSureScreen" type="CanvasLayer"]
 
@@ -74,7 +73,7 @@ anchor_bottom = 0.385536
 offset_right = 489.0
 offset_bottom = 52.0
 text = "if you return to the main menu now, this run will be ended."
-label_settings = ExtResource("5_t6o1b")
+label_settings = ExtResource("4_w77f1")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

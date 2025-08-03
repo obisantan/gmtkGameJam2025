@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bnlmelc5fprjb"]
+[gd_scene load_steps=10 format=3 uid="uid://bnlmelc5fprjb"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_mrvog"]
 [ext_resource type="LabelSettings" uid="uid://duy06rtekejv1" path="res://graphics/ui/title_label_settings.tres" id="2_ho0co"]
 [ext_resource type="Texture2D" uid="uid://b0ws8whmsky40" path="res://graphics/ui/rounded_panel.png" id="2_j2yx1"]
+[ext_resource type="Texture2D" uid="uid://myntwla0qcv" path="res://graphics/words/word.png" id="3_xt4us"]
 [ext_resource type="PackedScene" uid="uid://dnet3v7h6r031" path="res://scenes/button.tscn" id="5_4ohmx"]
 [ext_resource type="LabelSettings" uid="uid://dm8c76cytfbun" path="res://graphics/ui/subtitle_label_settings.tres" id="5_u3xu6"]
 [ext_resource type="Theme" uid="uid://btt25erut8jc2" path="res://graphics/ui/button_theme.tres" id="6_l57qt"]
@@ -28,9 +29,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -329.0
-offset_top = -20.0
+offset_top = 4.0
 offset_right = 329.0
-offset_bottom = 148.0
+offset_bottom = 172.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -44,16 +45,38 @@ patch_margin_bottom = 30
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
-[node name="Title" type="Label" parent="MainMenuUI"]
+[node name="Sprite" type="NinePatchRect" parent="MainMenuUI"]
+custom_minimum_size = Vector2(180, 64)
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 114.0
+offset_top = -171.0
+offset_right = -135.0
+offset_bottom = -217.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_xt4us")
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 10
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Title" type="Label" parent="MainMenuUI/Sprite"]
+layout_mode = 1
+anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -244.5
-offset_top = -182.0
-offset_right = 244.5
-offset_bottom = -52.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_right = 180.0
 grow_horizontal = 2
+grow_vertical = 2
 text = "Lingo Loop"
 label_settings = ExtResource("2_ho0co")
 horizontal_alignment = 1
@@ -63,12 +86,16 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 1
 offset_left = -290.0
+offset_top = -37.0
 offset_right = -110.0
+offset_bottom = 27.0
 text = "Play Game"
 
 [node name="HowToPlayButton" parent="MainMenuUI" instance=ExtResource("5_4ohmx")]
 unique_name_in_owner = true
 layout_mode = 1
+offset_top = -37.0
+offset_bottom = 27.0
 button_type = 6
 text = "How To Play"
 
@@ -76,7 +103,9 @@ text = "How To Play"
 unique_name_in_owner = true
 layout_mode = 1
 offset_left = 110.0
+offset_top = -37.0
 offset_right = 290.0
+offset_bottom = 27.0
 button_type = 7
 text = "Credits"
 
@@ -89,7 +118,7 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -329.0
-offset_top = -166.0
+offset_top = -184.0
 offset_right = 329.0
 offset_bottom = 180.0
 grow_horizontal = 2
@@ -111,9 +140,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -244.5
-offset_top = -118.0
+offset_top = -92.0
 offset_right = 244.5
-offset_bottom = 12.0
+offset_bottom = 38.0
 grow_horizontal = 2
 text = "How To Play"
 label_settings = ExtResource("5_u3xu6")
@@ -126,9 +155,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 17.0
-offset_top = 11.0
+offset_top = 16.0
 offset_right = -12.0
-offset_bottom = -20.0
+offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -148,8 +177,8 @@ script = ExtResource("6_u33p6")
 
 [node name="BackButton" parent="HowToPlayUI" instance=ExtResource("5_4ohmx")]
 layout_mode = 1
-offset_top = 184.0
-offset_bottom = 248.0
+offset_top = 192.0
+offset_bottom = 256.0
 button_type = 8
 text = "Back"
 
@@ -161,9 +190,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -329.0
-offset_top = -166.0
-offset_right = 329.0
+offset_left = -290.0
+offset_top = -184.0
+offset_right = 290.0
 offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -184,9 +213,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -244.5
-offset_top = -118.0
+offset_top = -93.0
 offset_right = 244.5
-offset_bottom = 12.0
+offset_bottom = 37.0
 grow_horizontal = 2
 text = "Credits"
 label_settings = ExtResource("5_u3xu6")
@@ -199,31 +228,33 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 15.0
-offset_top = 11.0
+offset_top = 10.0
 offset_right = -12.0
-offset_bottom = -20.0
+offset_bottom = -21.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("6_l57qt")
 theme_override_constants/line_separation = -8
+theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
-text = "[font_size=32][center]made by [color=#029ae0]O.b. Studios[/color]
+text = "[center][font_size=32]made by [color=#029ae0]O.b. Studios[/color][/font_size]
 for the gmtk game jam 2025
 
-[b][color=#029ae0]Music[/color][/b]
-[url=incompetech.com]\"Late Night Radio\" Kevin MacLeod[/url]
+
+[font_size=32][b][color=#029ae0]Music[/color][/b]
+[url=incompetech.com]\"Late Night Radio\" Kevin MacLeod[/url][/font_size]
 [url=http://creativecommons.org/licenses/by/4.0/]Licensed under Creative Commons: By Attribution 4.0 License[/url]
 
-[b][color=#029ae0]Font[/color][/b]
-[url=https://github.com/nguyentype/vinasans]Copyright 2023 The Vina Sans Project Authors[/url]
+
+[font_size=32][b][color=#029ae0]Font[/color][/b]
+[url=https://github.com/nguyentype/vinasans]Copyright 2023 The Vina Sans Project Authors[/url][/font_size]
 [url=http://scripts.sil.org/OFL]Licensed under SIL OFL 1.1[/url]
 
-[b][color=#029ae0]UI Assets[/color][/b]
-[url=https://prinbles.itch.io/solid]Solid by Prinbles[/url]
 
-[/center][/font_size]
+[font_size=32][b][color=#029ae0]UI Assets[/color][/b]
+[url=https://prinbles.itch.io/solid]Solid by Prinbles[/url]
 
 "
 meta_underlined = false
@@ -231,8 +262,8 @@ script = ExtResource("6_u33p6")
 
 [node name="BackButton" parent="CreditsUI" instance=ExtResource("5_4ohmx")]
 layout_mode = 1
-offset_top = 184.0
-offset_bottom = 248.0
+offset_top = 192.0
+offset_bottom = 256.0
 button_type = 8
 text = "Back"
 

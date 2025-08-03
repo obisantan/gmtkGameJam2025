@@ -15,4 +15,4 @@ func _on_visibility_changed():
 	final_score_label.text = "Final Score: %s" % Utils.this_run_total_points
 	highest_level_reached_label.text = "You made it to level %s" % Utils.this_run_highest_level_reached
 	total_loops_label.text = "And submitted %s %s" % [Utils.this_run_total_loops_submitted, "loop" if Utils.this_run_total_loops_submitted == 1 else "loops"]
-	best_loop_label.text = "Best Loop: %s words for %s points" % [Utils.this_run_best_loop_word_amount, Utils.this_run_best_loop_score]
+	best_loop_label.text = "Best Loop: %s words, %s points" % [Utils.this_run_best_loop_word_amount, Utils.this_run_best_loop_score]

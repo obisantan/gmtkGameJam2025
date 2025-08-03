@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://be6uj45ihvs4j"]
+[gd_scene load_steps=14 format=3 uid="uid://be6uj45ihvs4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_hxnpu"]
 [ext_resource type="PackedScene" uid="uid://b682354tsfxxv" path="res://scenes/word_pool.tscn" id="2_kwxyf"]
 [ext_resource type="PackedScene" uid="uid://dmm1dv8luwsh0" path="res://scenes/loop_area.tscn" id="2_n0hmi"]
 [ext_resource type="Texture2D" uid="uid://b0ws8whmsky40" path="res://graphics/ui/rounded_panel.png" id="5_evi7c"]
 [ext_resource type="PackedScene" uid="uid://ddasgakxbsmt0" path="res://scenes/mute_button.tscn" id="5_moww0"]
+[ext_resource type="LabelSettings" uid="uid://be3dgkubpb7cx" path="res://graphics/ui/label_settings_standard.tres" id="6_2ciul"]
 [ext_resource type="Texture2D" uid="uid://bpnsb6by47vpw" path="res://graphics/ui/title.png" id="6_2f6hi"]
 [ext_resource type="LabelSettings" uid="uid://c2t17qgpk0g7f" path="res://graphics/ui/text_settings_standard.tres" id="6_uf63w"]
 [ext_resource type="LabelSettings" uid="uid://cxcixxmf6x0u0" path="res://graphics/ui/label_settings_mult.tres" id="8_6kcac"]
@@ -16,6 +17,18 @@
 [node name="Main" type="Node2D"]
 script = ExtResource("1_hxnpu")
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+process_mode = 4
+layer = -128
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.572549)
+
 [node name="WordPool" parent="." instance=ExtResource("2_kwxyf")]
 unique_name_in_owner = true
 z_index = -1
@@ -24,7 +37,7 @@ position = Vector2(579, 413)
 [node name="LoopArea" parent="." instance=ExtResource("2_n0hmi")]
 unique_name_in_owner = true
 z_index = -1
-position = Vector2(667, 148)
+position = Vector2(672, 145)
 
 [node name="MessageLabel" type="Label" parent="."]
 unique_name_in_owner = true
@@ -47,10 +60,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 13.0
-offset_top = 16.0
-offset_right = 327.0
-offset_bottom = 265.0
+offset_left = 25.0
+offset_top = 9.0
+offset_right = 373.0
+offset_bottom = 273.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -68,7 +81,7 @@ axis_stretch_vertical = 1
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 134.0
+offset_bottom = 128.0
 grow_horizontal = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -88,7 +101,7 @@ anchor_right = 1.0
 offset_bottom = 52.0
 grow_horizontal = 2
 text = "Level X"
-label_settings = ExtResource("6_uf63w")
+label_settings = ExtResource("6_2ciul")
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
@@ -102,9 +115,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -79.0
-offset_top = -86.5
+offset_top = -91.5
 offset_right = 79.0
-offset_bottom = -34.5
+offset_bottom = -39.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "0 / X Points"
@@ -121,9 +134,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -72.0
-offset_top = -46.5
+offset_top = -54.5
 offset_right = 72.0
-offset_bottom = 5.5
+offset_bottom = -2.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "0 / X Loops"
@@ -135,9 +148,9 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.935743
+anchor_top = 0.894076
 anchor_right = 1.0
-anchor_bottom = 0.935743
+anchor_bottom = 0.894076
 offset_top = -98.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -166,29 +179,29 @@ unique_name_in_owner = true
 visible = false
 
 [node name="ResetButton" parent="." instance=ExtResource("12_a0jgd")]
-offset_left = 31.0001
-offset_top = 360.0
-offset_right = 211.0
-offset_bottom = 424.0
-scale = Vector2(0.8, 0.8)
+offset_left = 62.0
+offset_top = 389.0
+offset_right = 242.0
+offset_bottom = 453.0
+scale = Vector2(0.7, 0.7)
 button_type = 2
 text = "Reset Loop"
 
 [node name="MainMenuButton" parent="." instance=ExtResource("12_a0jgd")]
-offset_left = 63.0
-offset_top = 486.0
-offset_right = 243.0
-offset_bottom = 550.0
+offset_left = 62.0
+offset_top = 485.0
+offset_right = 242.0
+offset_bottom = 549.0
 scale = Vector2(0.7, 0.7)
 button_type = 5
 text = "Main Menu"
 
 [node name="ShuffleButton" parent="." instance=ExtResource("12_a0jgd")]
-offset_left = 31.0001
-offset_top = 415.0
-offset_right = 211.0
-offset_bottom = 479.0
-scale = Vector2(0.8, 0.8)
+offset_left = 62.0
+offset_top = 437.0
+offset_right = 242.0
+offset_bottom = 501.0
+scale = Vector2(0.7, 0.7)
 button_type = 1
 text = "shuffle words"
 
@@ -197,6 +210,6 @@ unique_name_in_owner = true
 offset_left = 13.0
 offset_top = 279.0
 offset_right = 193.0
-offset_bottom = 343.0
+offset_bottom = 379.0
 button_type = 3
 text = "submit loop"
