@@ -6,9 +6,9 @@ var transition_time: float = 0.5
 var music_player: AudioStreamPlayer
 var default_volume
 
-@onready var master_bus = AudioServer.get_bus_index("Master")
-@onready var music_bus = AudioServer.get_bus_index("Music")
-@onready var sfx_bus = AudioServer.get_bus_index("SFX")
+@onready var master_bus: int = AudioServer.get_bus_index("Master")
+@onready var music_bus: int = AudioServer.get_bus_index("Music")
+@onready var sfx_bus: int = AudioServer.get_bus_index("SFX")
 @onready var music := preload("res://audio/Late Night Radio.mp3")
 
 func _ready():
@@ -29,7 +29,7 @@ func change_scene_with_transition(new_scene_path: String, transition_type: Strin
 	get_tree().root.add_child(transition)
 	
 	# Fade out
-	var tween = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(transition, "color:a", 1.0, transition_time/2)
 	tween.tween_callback(func():
 		# Load new scene

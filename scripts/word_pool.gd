@@ -7,12 +7,12 @@ var word_list_debug: Array[String] = ["apple", "elephant", "tiger", "rat", "tree
 
 ## WORDPOOL GRID
 var spawn_points: Array[Vector2] = [] # this holds all available spawn points in the word pool (only gets regenerated at level start)
-var grid_size = Vector2(145, 70)  # adjust based on sprite size + spacing
-var cols = 5
-var start_pos = Vector2(-290, -70)
+var grid_size: Vector2 = Vector2(145, 70)  # adjust based on sprite size + spacing
+var cols: int = 5
+var start_pos: Vector2 = Vector2(-290, -70)
 
 func _ready():
-	var word_list: Array[String] = word_list_debug if Utils.debugging else DictionaryManager.get_level_words()
+	var word_list: Array[String] = word_list_debug if Utils.debugging_words else DictionaryManager.get_level_words()
 	generate_spawn_points(DictionaryManager.amount_of_words_per_level)
 	spawn_word_nodes(word_list)
 
@@ -23,8 +23,8 @@ func _draw():
 func is_inside(global_point: Vector2) -> bool:
 	var region_size = sprite.size * sprite.scale
 	# the *4 at the end makes it reach way outside the screen, making it possible to drop off words without hitting the area exactly
-	var bounds = Rect2(-region_size / 2, region_size * 4)
-	var local_pos = to_local(global_point)
+	var bounds: Rect2 = Rect2(-region_size / 2, region_size * 4)
+	var local_pos: Vector2 = to_local(global_point)
 	return bounds.has_point(local_pos)
 
 ###################################################################################################
@@ -34,19 +34,19 @@ func is_inside(global_point: Vector2) -> bool:
 func generate_spawn_points(amount: int) -> void:
 	spawn_points.clear()
 	for i in range(amount):
-		var local_point = start_pos + Vector2(i % cols, i / cols) * grid_size
-		var global_point = to_global(local_point)
+		var local_point: Vector2 = start_pos + Vector2(i % cols, i / cols) * grid_size
+		var global_point: Vector2 = to_global(local_point)
 		spawn_points.append(global_point)
 
 func spawn_word_nodes(word_list: Array[String], needed_spawn_points: Array[Vector2] = []):
-	var word_scene = preload("res://scenes/word.tscn")
+	var word_scene: PackedScene = preload("res://scenes/word.tscn")
 	
 	# Determine spawn points: if none provided, fill all of them
 	if needed_spawn_points.is_empty():
 		needed_spawn_points = spawn_points
 
 	for i in range(word_list.size()):
-		var word_node = word_scene.instantiate()
+		var word_node: Node = word_scene.instantiate()
 		word_node.word = word_list[i]
 
 		## VERY IMPORTANT: first, add word to parent, then set global position and save the spawn point

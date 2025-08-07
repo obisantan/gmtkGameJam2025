@@ -122,7 +122,7 @@ func on_shuffle_button():
 
 func on_submit_button():
 	# before removing loop, we need to check how many words need to be replaced in the word pool, and where they spawned
-	var amount_of_words_in_submitted_loop = loop.size()
+	var amount_of_words_in_submitted_loop: int = loop.size()
 	var new_spawn_points: Array[Vector2]
 	for word_node in loop:
 		new_spawn_points.append(word_node.spawn_point)
@@ -185,6 +185,11 @@ func _process(delta):
 						move_back_to_spawn(word_node)
 
 					word_node.dragging = false
+					
+				elif word_pool.is_inside(word_node.global_position):
+					for banked_word in word_pool.get_children():
+						if banked_word.is_in_group("words") and banked_word.is_inside(word_node.global_position):
+							switch_pool_words(word_node, banked_word)
 				else:
 					# Not dropped in loop area, reset drag
 					word_node.dragging = false
@@ -198,6 +203,10 @@ func _process(delta):
 				# if word is dropped inside word_pool
 				if word_pool.is_inside(word_node.global_position):
 					if can_remove_word(word_node):
+						for banked_word in word_pool.get_children():
+							if banked_word.is_in_group("words") and banked_word.is_inside(word_node.global_position):
+								switch_pool_words(word_node, banked_word)
+							
 						remove_word_from_loop(word_node)
 					else:
 						message_label.text = "❌ Cannot remove '%s' from Loop!" % word_node.word
@@ -205,6 +214,7 @@ func _process(delta):
 						word_node.move_to_pos(word_node.loop_point)
 
 					word_node.dragging = false
+				
 				else:
 					# Not dropped in pool area, reset drag
 					word_node.dragging = false
@@ -214,16 +224,24 @@ func _process(delta):
 	# and at the end, keep lines up to date with word locations
 	update_lines(delta)
 
+func switch_pool_words(dragged_word: Word, banked_word: Word) -> void:
+	# switch place and spawn point with the word you placed your word on
+	var banked_spawn: Vector2 = banked_word.spawn_point
+	banked_word.spawn_point = dragged_word.spawn_point
+	dragged_word.spawn_point = banked_spawn
+	move_back_to_spawn(dragged_word)
+	move_back_to_spawn(banked_word)
+
 func can_add_word(word: String) -> bool:
 	if loop.size() == 0:
 		return true
-	var last_word = loop[-1].word # references last word 
+	var last_word: String = loop[-1].word # references last word 
 	return last_word[-1] == word[0] # compares the last letter in the last word to the current first letter
 
 func add_word_to_loop(word_node: Word):
 	loop.append(word_node)
 	# Store the current global position before reparenting
-	var drop_pos = word_node.global_position
+	var drop_pos: Vector2 = word_node.global_position
 	word_node.get_parent().remove_child(word_node)
 	loop_area.add_child(word_node)
 	word_node.location = Utils.Location.LOOP
@@ -236,22 +254,22 @@ func add_word_to_loop(word_node: Word):
 	update_ui()
 
 func arrange_loop_words():
-	var radius_x = 180.0  # horizontal radius (ellipse width)
-	var radius_y = 85.0   # vertical radius (ellipse height)
-	var center = loop_area.global_position
-	var count = loop.size()
+	var radius_x: float = 180.0  # horizontal radius (ellipse width)
+	var radius_y: float = 85.0   # vertical radius (ellipse height)
+	var center: Vector2 = loop_area.global_position
+	var count: int = loop.size()
 	if count == 0:
 		return
 
-	var start_angle = PI
+	var start_angle: float = PI
 	for i in range(count):
 		var angle = start_angle + i * TAU / float(count)
 
 		# Elliptical offset using both radii
-		var offset = Vector2(cos(angle) * radius_x, sin(angle) * radius_y)
-		var global_pos = center + offset
+		var offset: Vector2 = Vector2(cos(angle) * radius_x, sin(angle) * radius_y)
+		var global_pos: Vector2 = center + offset
 
-		var current_word = loop[i]
+		var current_word: Word = loop[i]
 
 		# Set position
 		current_word.loop_point = global_pos
@@ -298,7 +316,7 @@ func check_loop_complete(word_node: Word, was_added: bool):
 			else:
 				message_label.text = "✅ Removed %s!" % [word_node.word]
 
-func can_remove_word(word_node: Word):
+func can_remove_word(word_node: Word) -> bool:
 	if loop.size() == 0:
 		print("how are you gonna remove a word from an empty array? 🤔")
 		return false
@@ -323,7 +341,7 @@ func remove_word_from_loop(word_node: Word):
 	update_ui()
 
 func move_back_to_spawn(word_node: Word) -> void:
-	var drop_pos = word_node.global_position  # keep visual position before reparent
+	var drop_pos: Vector2 = word_node.global_position  # keep visual position before reparent
 	word_node.get_parent().remove_child(word_node)
 	word_pool.add_child(word_node)
 	word_node.location = Utils.Location.POOL
@@ -340,7 +358,7 @@ func update_ui() -> void:
 		curr_points_label.text = "- x -"
 		return
 
-	var points = 0
+	var points: int = 0
 	var curr_mult = point_multipliers[loop.size()]
 
 	for word in loop:
@@ -361,7 +379,7 @@ func update_global_scores() -> void:
 func remove_loop():
 	for word_node in loop:
 		previously_used_words.append(word_node.word)
-		var tween = create_tween()
+		var tween: Tween = create_tween()
 		tween.tween_property(word_node, "modulate:a", 0.0, 0.4).set_trans(Tween.TRANS_SINE)
 		tween.tween_property(word_node, "scale", Vector2(1.2, 1.2), 0.4)
 		tween.tween_callback(Callable(word_node, "queue_free"))
@@ -390,7 +408,7 @@ func clear_lines():
 		line.queue_free()
 	line_nodes.clear()
 
-func redraw_lines():
+func redraw_lines() -> void:
 	clear_lines()
 
 	if loop.size() < 2:
@@ -401,8 +419,8 @@ func redraw_lines():
 	loop_complete = loop.size() >= 3 and loop[0].word[0] == loop[-1].word[-1]
 
 	for i in range(loop.size() - 1):
-		var start_word = loop[i]
-		var end_word = loop[i + 1]
+		var start_word: Word = loop[i]
+		var end_word: Word = loop[i + 1]
 		if start_word.word[-1] == end_word.word[0]:
 			var line = Line2D.new()
 			line.antialiased = true
@@ -417,8 +435,8 @@ func redraw_lines():
 
 	# Only draw final closing line if loop is actually valid
 	if loop_complete:
-		var first = loop[0]
-		var last = loop[-1]
+		var first: Word = loop[0]
+		var last: Word = loop[-1]
 		var final_line = Line2D.new()
 		final_line.antialiased = true
 		final_line.default_color = Color(0.122, 0.643, 0.004, 1.0)
@@ -430,16 +448,16 @@ func redraw_lines():
 		line_container.add_child(final_line)
 		line_nodes.append(final_line)
 
-func update_lines(delta):
+func update_lines(delta) -> void:
 	if loop.size() < 2 or line_nodes.size() == 0:
 		return
 
-	var index = 0
+	var index: int = 0
 	for i in range(loop.size() - 1):
-		var start_word = loop[i]
-		var end_word = loop[i + 1]
+		var start_word: Word = loop[i]
+		var end_word: Word = loop[i + 1]
 		if start_word.word[-1] == end_word.word[0]:
-			var line = line_nodes[index]
+			var line: Line2D = line_nodes[index]
 			line.points = [
 				line_container.to_local(start_word.global_position),
 				line_container.to_local(end_word.global_position)
@@ -451,9 +469,9 @@ func update_lines(delta):
 			index += 1
 
 	if loop_complete and index < line_nodes.size():
-		var first = loop[0]
-		var last = loop[-1]
-		var final_line = line_nodes[index]
+		var first: Word = loop[0]
+		var last: Word = loop[-1]
+		var final_line: Line2D = line_nodes[index]
 		final_line.points = [
 			line_container.to_local(last.global_position),
 			line_container.to_local(first.global_position)

@@ -7,9 +7,9 @@ static var z_max := 10
 @onready var label = %Label
 @onready var sprite = %Sprite
 
-const MAX_WIDTH = 140 # Or whatever width your sprite allows
-const MIN_FONT_SIZE = 30 # Avoid fonts getting too tiny
-const MAX_FONT_SIZE = 35 # Starting point for big text
+const MAX_WIDTH: int = 140 # Or whatever width your sprite allows
+const MIN_FONT_SIZE: int = 30 # Avoid fonts getting too tiny
+const MAX_FONT_SIZE: int = 35 # Starting point for big text
 
 ## currently not in use
 var next : Word = null
@@ -40,6 +40,12 @@ func _ready():
 #func _draw():
 #	var region_size = sprite.region_rect.size * sprite.scale
 #	draw_rect(Rect2(-region_size / 2, region_size), Color.RED, false)
+
+func is_inside(global_point: Vector2) -> bool:
+	var region_size = sprite.size * sprite.scale
+	var bounds: Rect2 = Rect2(-region_size / 2, region_size)
+	var local_pos: Vector2 = to_local(global_point)
+	return bounds.has_point(local_pos)
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
@@ -112,8 +118,8 @@ func scale_to(target_scale: Vector2, duration: float = 0.2):
 
 func _is_mouse_over() -> bool:
 	var region_size = sprite.size * sprite.scale
-	var bounds = Rect2(-region_size / 2, region_size)
-	var mouse_pos = to_local(get_viewport().get_mouse_position())
+	var bounds: Rect2 = Rect2(-region_size / 2, region_size)
+	var mouse_pos: Vector2 = to_local(get_viewport().get_mouse_position())
 	return bounds.has_point(mouse_pos)
 
 func fit_text_to_width():

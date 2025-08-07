@@ -2,7 +2,8 @@
 extends Node
 
 ############################
-var debugging: bool = false
+var debugging: bool = true
+var debugging_words: bool = false
 ############################
 
 enum Location {POOL, LOOP}
